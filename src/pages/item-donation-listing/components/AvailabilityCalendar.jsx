@@ -87,8 +87,8 @@ const AvailabilityCalendar = ({ availability, onAvailabilityChange, error }) => 
   return (
     <div className="space-y-6">
       <div>
-        <label className="block text-sm font-medium text-foreground mb-3">
-          Pickup Availability <span className="text-destructive">*</span>
+        <label className="block text-sm font-medium text-white mb-3">
+          Pickup Availability <span className="text-red-400">*</span>
         </label>
         
         {/* Availability Type Selection */}
@@ -99,37 +99,37 @@ const AvailabilityCalendar = ({ availability, onAvailabilityChange, error }) => 
               type="button"
               onClick={() => handleTypeChange(type?.id)}
               className={`
-                p-4 rounded-interactive border-2 transition-smooth text-left
+                p-4 rounded-lg border-2 transition-all duration-300 text-left bg-white/10 border-white/20
                 ${availability?.type === type?.id
-                  ? 'border-primary bg-primary/5 shadow-subtle'
-                  : 'border-border hover:border-primary/50 hover:bg-muted/50'
+                  ? 'border-purple-500 bg-purple-500/20 shadow-lg'
+                  : 'hover:border-purple-400/50 hover:bg-white/20'
                 }
               `}
             >
               <div className="flex items-center space-x-3">
                 <div className={`
                   w-8 h-8 rounded-full flex items-center justify-center
-                  ${availability?.type === type?.id ? 'bg-primary/10' : 'bg-muted'}
+                  ${availability?.type === type?.id ? 'bg-purple-500/20' : 'bg-white/20'}
                 `}>
                   <Icon 
                     name={type?.icon} 
                     size={16} 
-                    className={availability?.type === type?.id ? 'text-primary' : 'text-muted-foreground'}
+                    className={availability?.type === type?.id ? 'text-purple-400' : 'text-white'}
                   />
                 </div>
                 <div className="flex-1">
                   <h4 className={`
-                    text-sm font-medium
-                    ${availability?.type === type?.id ? 'text-primary' : 'text-foreground'}
+                    text-sm font-medium text-white
+                    ${availability?.type === type?.id ? 'text-purple-400' : 'text-white'}
                   `}>
                     {type?.label}
                   </h4>
-                  <p className="text-xs text-muted-foreground font-caption">
+                  <p className="text-xs text-gray-300 font-caption">
                     {type?.description}
                   </p>
                 </div>
                 {availability?.type === type?.id && (
-                  <Icon name="Check" size={16} className="text-primary" />
+                  <Icon name="Check" size={16} className="text-purple-400" />
                 )}
               </div>
             </button>
@@ -139,7 +139,7 @@ const AvailabilityCalendar = ({ availability, onAvailabilityChange, error }) => 
       {/* Specific Dates Selection */}
       {availability?.type === 'specific' && (
         <div className="space-y-4">
-          <h4 className="text-sm font-medium text-foreground">Select Available Dates</h4>
+          <h4 className="text-sm font-medium text-white">Select Available Dates</h4>
           <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2">
             {dates?.map((date) => {
               const dateStr = date?.toISOString()?.split('T')?.[0];
@@ -151,10 +151,10 @@ const AvailabilityCalendar = ({ availability, onAvailabilityChange, error }) => 
                   type="button"
                   onClick={() => handleDateToggle(date)}
                   className={`
-                    p-3 rounded-interactive border transition-smooth text-center
+                    p-3 rounded-lg border transition-all duration-300 text-center bg-white/10 border-white/20 text-white
                     ${isSelected
-                      ? 'border-primary bg-primary text-primary-foreground'
-                      : 'border-border hover:border-primary/50 hover:bg-muted/50'
+                      ? 'border-purple-500 bg-purple-500/20 text-white'
+                      : 'hover:border-purple-400/50 hover:bg-white/20'
                     }
                   `}
                 >
@@ -173,7 +173,7 @@ const AvailabilityCalendar = ({ availability, onAvailabilityChange, error }) => 
       {/* Time Slots */}
       {(availability?.type === 'specific' || availability?.type === 'flexible') && (
         <div className="space-y-4">
-          <h4 className="text-sm font-medium text-foreground">Preferred Time Slots</h4>
+          <h4 className="text-sm font-medium text-white">Preferred Time Slots</h4>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             {timeSlots?.map((slot) => {
               const isSelected = availability?.timeSlots?.includes(slot?.id);
@@ -184,37 +184,37 @@ const AvailabilityCalendar = ({ availability, onAvailabilityChange, error }) => 
                   type="button"
                   onClick={() => handleTimeSlotToggle(slot?.id)}
                   className={`
-                    p-4 rounded-interactive border-2 transition-smooth text-left
+                    p-4 rounded-lg border-2 transition-all duration-300 text-left bg-white/10 border-white/20
                     ${isSelected
-                      ? 'border-primary bg-primary/5 shadow-subtle'
-                      : 'border-border hover:border-primary/50 hover:bg-muted/50'
+                      ? 'border-purple-500 bg-purple-500/20 shadow-lg'
+                      : 'hover:border-purple-400/50 hover:bg-white/20'
                     }
                   `}
                 >
                   <div className="flex items-center space-x-3">
                     <div className={`
                       w-8 h-8 rounded-full flex items-center justify-center
-                      ${isSelected ? 'bg-primary/10' : 'bg-muted'}
+                      ${isSelected ? 'bg-purple-500/20' : 'bg-white/20'}
                     `}>
                       <Icon 
                         name={slot?.icon} 
                         size={16} 
-                        className={isSelected ? 'text-primary' : 'text-muted-foreground'}
+                        className={isSelected ? 'text-purple-400' : 'text-white'}
                       />
                     </div>
                     <div className="flex-1">
                       <h5 className={`
-                        text-sm font-medium
-                        ${isSelected ? 'text-primary' : 'text-foreground'}
+                        text-sm font-medium text-white
+                        ${isSelected ? 'text-purple-400' : 'text-white'}
                       `}>
                         {slot?.label}
                       </h5>
-                      <p className="text-xs text-muted-foreground font-caption">
+                      <p className="text-xs text-gray-300 font-caption">
                         {slot?.time}
                       </p>
                     </div>
                     {isSelected && (
-                      <Icon name="Check" size={16} className="text-primary" />
+                      <Icon name="Check" size={16} className="text-purple-400" />
                     )}
                   </div>
                 </button>
@@ -225,12 +225,12 @@ const AvailabilityCalendar = ({ availability, onAvailabilityChange, error }) => 
       )}
       {/* Urgent Pickup Note */}
       {availability?.type === 'urgent' && (
-        <div className="bg-accent/10 border border-accent/20 rounded-interactive p-4">
+        <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-lg p-4">
           <div className="flex items-start space-x-3">
-            <Icon name="AlertCircle" size={20} className="text-accent flex-shrink-0 mt-0.5" />
+            <Icon name="AlertCircle" size={20} className="text-yellow-400 flex-shrink-0 mt-0.5" />
             <div>
-              <h4 className="text-sm font-medium text-accent mb-1">Urgent Pickup Required</h4>
-              <p className="text-xs text-muted-foreground font-caption">
+              <h4 className="text-sm font-medium text-yellow-400 mb-1">Urgent Pickup Required</h4>
+              <p className="text-xs text-gray-300 font-caption">
                 Your donation will be prioritized and matched with nearby NGOs for immediate pickup. 
                 You may receive pickup requests within 24 hours.
               </p>
@@ -239,7 +239,7 @@ const AvailabilityCalendar = ({ availability, onAvailabilityChange, error }) => 
         </div>
       )}
       {error && (
-        <p className="text-sm text-destructive font-caption">{error}</p>
+        <p className="text-sm text-red-400 font-caption">{error}</p>
       )}
     </div>
   );

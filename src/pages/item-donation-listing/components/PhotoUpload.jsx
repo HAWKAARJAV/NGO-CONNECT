@@ -62,15 +62,15 @@ const PhotoUpload = ({ photos, onPhotosChange, error }) => {
 
   return (
     <div className="space-y-4">
-      <label className="block text-sm font-medium text-foreground">
-        Photos <span className="text-muted-foreground">(Optional, max 5)</span>
+      <label className="block text-sm font-medium text-white">
+        Photos <span className="text-gray-300">(Optional, max 5)</span>
       </label>
       {/* Upload Area */}
       <div
         className={`
-          relative border-2 border-dashed rounded-interactive p-6 text-center transition-smooth
+          relative border-2 border-dashed rounded-lg p-6 text-center transition-all duration-300 bg-white/10 border-white/30
           ${dragActive 
-            ? 'border-primary bg-primary/5' :'border-border hover:border-primary/50 hover:bg-muted/30'
+            ? 'border-purple-500 bg-purple-500/20' :'hover:border-purple-400/50 hover:bg-white/20'
           }
         `}
         onDragEnter={handleDrag}
@@ -88,14 +88,14 @@ const PhotoUpload = ({ photos, onPhotosChange, error }) => {
         />
         
         <div className="space-y-3">
-          <div className="w-12 h-12 mx-auto bg-muted rounded-full flex items-center justify-center">
-            <Icon name="ImagePlus" size={24} className="text-muted-foreground" />
+          <div className="flex items-center justify-center w-12 h-12 mx-auto rounded-full bg-white/20">
+            <Icon name="ImagePlus" size={24} className="text-white" />
           </div>
           <div>
-            <p className="text-sm font-medium text-foreground">
+            <p className="text-sm font-medium text-white">
               Drag & drop photos here, or click to select
             </p>
-            <p className="text-xs text-muted-foreground mt-1 font-caption">
+            <p className="mt-1 text-xs text-gray-300 font-caption">
               PNG, JPG up to 10MB each
             </p>
           </div>
@@ -103,24 +103,24 @@ const PhotoUpload = ({ photos, onPhotosChange, error }) => {
       </div>
       {/* Photo Previews */}
       {photos?.length > 0 && (
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
           {photos?.map((photo, index) => (
             <div key={photo?.id} className="relative group">
-              <div className="aspect-square rounded-interactive overflow-hidden bg-muted">
+              <div className="overflow-hidden rounded-lg aspect-square bg-white/10">
                 <Image
                   src={photo?.url}
                   alt={`Upload ${index + 1}`}
-                  className="w-full h-full object-cover"
+                  className="object-cover w-full h-full"
                 />
               </div>
               
               {/* Photo Controls */}
-              <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-smooth rounded-interactive flex items-center justify-center space-x-2">
+              <div className="absolute inset-0 flex items-center justify-center space-x-2 transition-all duration-300 rounded-lg opacity-0 bg-black/50 group-hover:opacity-100">
                 {index > 0 && (
                   <button
                     type="button"
                     onClick={() => reorderPhotos(index, index - 1)}
-                    className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center hover:bg-white/30 transition-smooth"
+                    className="flex items-center justify-center w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 transition-smooth"
                   >
                     <Icon name="ChevronLeft" size={16} color="white" />
                   </button>
@@ -129,7 +129,7 @@ const PhotoUpload = ({ photos, onPhotosChange, error }) => {
                 <button
                   type="button"
                   onClick={() => removePhoto(photo?.id)}
-                  className="w-8 h-8 bg-destructive rounded-full flex items-center justify-center hover:bg-destructive/80 transition-smooth"
+                  className="flex items-center justify-center w-8 h-8 transition-colors bg-red-500 rounded-full hover:bg-red-600"
                 >
                   <Icon name="X" size={16} color="white" />
                 </button>
@@ -138,7 +138,7 @@ const PhotoUpload = ({ photos, onPhotosChange, error }) => {
                   <button
                     type="button"
                     onClick={() => reorderPhotos(index, index + 1)}
-                    className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center hover:bg-white/30 transition-smooth"
+                    className="flex items-center justify-center w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 transition-smooth"
                   >
                     <Icon name="ChevronRight" size={16} color="white" />
                   </button>
@@ -147,7 +147,7 @@ const PhotoUpload = ({ photos, onPhotosChange, error }) => {
               
               {/* Primary Photo Indicator */}
               {index === 0 && (
-                <div className="absolute top-2 left-2 bg-primary text-primary-foreground text-xs px-2 py-1 rounded font-caption">
+                <div className="absolute px-2 py-1 text-xs text-white bg-purple-500 rounded top-2 left-2 font-caption">
                   Primary
                 </div>
               )}
@@ -156,7 +156,7 @@ const PhotoUpload = ({ photos, onPhotosChange, error }) => {
         </div>
       )}
       {error && (
-        <p className="text-sm text-destructive font-caption">{error}</p>
+        <p className="text-sm text-red-400 font-caption">{error}</p>
       )}
     </div>
   );

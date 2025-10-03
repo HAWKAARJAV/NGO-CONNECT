@@ -40,45 +40,45 @@ const ConfirmationScreen = ({ donationData, onEdit, onNewDonation }) => {
     <div className="max-w-2xl mx-auto space-y-8">
       {/* Success Header */}
       <div className="text-center space-y-4">
-        <div className="w-16 h-16 bg-success/10 rounded-full flex items-center justify-center mx-auto">
-          <Icon name="CheckCircle" size={32} className="text-success" />
+        <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto">
+          <Icon name="CheckCircle" size={32} className="text-green-400" />
         </div>
         <div>
-          <h1 className="text-2xl font-heading font-bold text-foreground mb-2">
+          <h1 className="text-2xl font-heading font-bold text-white mb-2">
             Donation Posted Successfully!
           </h1>
-          <p className="text-muted-foreground font-caption">
+          <p className="text-gray-300 font-caption">
             Your donation is now live and visible to nearby NGOs
           </p>
         </div>
       </div>
       {/* Donation Summary Card */}
-      <div className="bg-card border border-border rounded-interactive shadow-subtle overflow-hidden">
+      <div className="presentation-card border border-white/20 rounded-2xl shadow-2xl overflow-hidden">
         <div className="p-6 space-y-6">
           {/* Header */}
           <div className="flex items-start justify-between">
             <div className="flex items-center space-x-3">
-              <div className="w-12 h-12 bg-primary/10 rounded-interactive flex items-center justify-center">
+              <div className="w-12 h-12 bg-purple-500/20 rounded-lg flex items-center justify-center">
                 <Icon 
                   name={getCategoryIcon(donationData?.category)} 
                   size={24} 
-                  className="text-primary" 
+                  className="text-purple-400" 
                 />
               </div>
               <div>
-                <h2 className="text-lg font-heading font-semibold text-foreground">
+                <h2 className="text-lg font-heading font-semibold text-white">
                   {donationData?.title}
                 </h2>
-                <p className="text-sm text-muted-foreground font-caption capitalize">
+                <p className="text-sm text-gray-300 font-caption capitalize">
                   {donationData?.category}
                 </p>
               </div>
             </div>
             <div className="text-right">
-              <p className="text-sm font-medium text-foreground">
+              <p className="text-sm font-medium text-white">
                 Donation ID
               </p>
-              <p className="text-xs text-muted-foreground font-mono">
+              <p className="text-xs text-gray-300 font-mono">
                 DN{Date.now()?.toString()?.slice(-6)}
               </p>
             </div>
@@ -87,10 +87,10 @@ const ConfirmationScreen = ({ donationData, onEdit, onNewDonation }) => {
           {/* Photos */}
           {donationData?.photos && donationData?.photos?.length > 0 && (
             <div>
-              <h3 className="text-sm font-medium text-foreground mb-3">Photos</h3>
+              <h3 className="text-sm font-medium text-white mb-3">Photos</h3>
               <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
                 {donationData?.photos?.slice(0, 4)?.map((photo, index) => (
-                  <div key={photo?.id} className="aspect-square rounded-interactive overflow-hidden bg-muted">
+                  <div key={photo?.id} className="aspect-square rounded-lg overflow-hidden bg-white/10">
                     <Image
                       src={photo?.url}
                       alt={`Donation photo ${index + 1}`}
@@ -99,8 +99,8 @@ const ConfirmationScreen = ({ donationData, onEdit, onNewDonation }) => {
                   </div>
                 ))}
                 {donationData?.photos?.length > 4 && (
-                  <div className="aspect-square rounded-interactive bg-muted flex items-center justify-center">
-                    <span className="text-xs text-muted-foreground font-caption">
+                  <div className="aspect-square rounded-lg bg-white/10 flex items-center justify-center">
+                    <span className="text-xs text-gray-300 font-caption">
                       +{donationData?.photos?.length - 4} more
                     </span>
                   </div>
@@ -113,15 +113,15 @@ const ConfirmationScreen = ({ donationData, onEdit, onNewDonation }) => {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div className="space-y-4">
               <div>
-                <h3 className="text-sm font-medium text-foreground mb-1">Description</h3>
-                <p className="text-sm text-muted-foreground font-caption">
+                <h3 className="text-sm font-medium text-white mb-1">Description</h3>
+                <p className="text-sm text-gray-300 font-caption">
                   {donationData?.description}
                 </p>
               </div>
               
               <div>
-                <h3 className="text-sm font-medium text-foreground mb-1">Quantity</h3>
-                <p className="text-sm text-muted-foreground font-caption">
+                <h3 className="text-sm font-medium text-white mb-1">Quantity</h3>
+                <p className="text-sm text-gray-300 font-caption">
                   {donationData?.quantity} item{donationData?.quantity !== 1 ? 's' : ''}
                 </p>
               </div>
@@ -129,15 +129,15 @@ const ConfirmationScreen = ({ donationData, onEdit, onNewDonation }) => {
 
             <div className="space-y-4">
               <div>
-                <h3 className="text-sm font-medium text-foreground mb-1">Condition</h3>
-                <p className={`text-sm font-caption capitalize ${getConditionColor(donationData?.condition)}`}>
+                <h3 className="text-sm font-medium text-white mb-1">Condition</h3>
+                <p className={`text-sm font-caption capitalize text-white`}>
                   {donationData?.condition}
                 </p>
               </div>
               
               <div>
-                <h3 className="text-sm font-medium text-foreground mb-1">Availability</h3>
-                <p className="text-sm text-muted-foreground font-caption">
+                <h3 className="text-sm font-medium text-white mb-1">Availability</h3>
+                <p className="text-sm text-gray-300 font-caption">
                   {formatAvailability(donationData?.availability)}
                 </p>
               </div>
@@ -146,14 +146,14 @@ const ConfirmationScreen = ({ donationData, onEdit, onNewDonation }) => {
 
           {/* Location */}
           <div>
-            <h3 className="text-sm font-medium text-foreground mb-2">Pickup Location</h3>
+            <h3 className="text-sm font-medium text-white mb-2">Pickup Location</h3>
             <div className="flex items-start space-x-2">
-              <Icon name="MapPin" size={16} className="text-primary mt-0.5" />
+              <Icon name="MapPin" size={16} className="text-purple-400 mt-0.5" />
               <div>
-                <p className="text-sm text-muted-foreground font-caption">
+                <p className="text-sm text-gray-300 font-caption">
                   {donationData?.location?.address}
                 </p>
-                <p className="text-xs text-muted-foreground font-caption">
+                <p className="text-xs text-gray-300 font-caption">
                   Pickup radius: {donationData?.location?.pickupRadius} km
                 </p>
               </div>
@@ -162,42 +162,42 @@ const ConfirmationScreen = ({ donationData, onEdit, onNewDonation }) => {
         </div>
       </div>
       {/* What Happens Next */}
-      <div className="bg-muted/50 rounded-interactive p-6">
-        <h3 className="text-lg font-heading font-semibold text-foreground mb-4">
+      <div className="presentation-card p-6">
+        <h3 className="text-lg font-heading font-semibold text-white mb-4">
           What happens next?
         </h3>
         <div className="space-y-3">
           <div className="flex items-start space-x-3">
-            <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-              <span className="text-xs text-primary-foreground font-mono font-semibold">1</span>
+            <div className="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+              <span className="text-xs text-white font-mono font-semibold">1</span>
             </div>
             <div>
-              <p className="text-sm font-medium text-foreground">NGO Matching</p>
-              <p className="text-xs text-muted-foreground font-caption">
+              <p className="text-sm font-medium text-white">NGO Matching</p>
+              <p className="text-xs text-gray-300 font-caption">
                 Nearby NGOs will be notified about your donation within 2-4 hours
               </p>
             </div>
           </div>
           
           <div className="flex items-start space-x-3">
-            <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-              <span className="text-xs text-primary-foreground font-mono font-semibold">2</span>
+            <div className="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+              <span className="text-xs text-white font-mono font-semibold">2</span>
             </div>
             <div>
-              <p className="text-sm font-medium text-foreground">Pickup Requests</p>
-              <p className="text-xs text-muted-foreground font-caption">
+              <p className="text-sm font-medium text-white">Pickup Requests</p>
+              <p className="text-xs text-gray-300 font-caption">
                 You'll receive pickup requests from interested NGOs
               </p>
             </div>
           </div>
           
           <div className="flex items-start space-x-3">
-            <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-              <span className="text-xs text-primary-foreground font-mono font-semibold">3</span>
+            <div className="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+              <span className="text-xs text-white font-mono font-semibold">3</span>
             </div>
             <div>
-              <p className="text-sm font-medium text-foreground">Impact Tracking</p>
-              <p className="text-xs text-muted-foreground font-caption">
+              <p className="text-sm font-medium text-white">Impact Tracking</p>
+              <p className="text-xs text-gray-300 font-caption">
                 Track how your donation helps the community through our impact dashboard
               </p>
             </div>
@@ -226,12 +226,12 @@ const ConfirmationScreen = ({ donationData, onEdit, onNewDonation }) => {
         </Button>
       </div>
       {/* Estimated Timeline */}
-      <div className="text-center p-4 bg-accent/10 border border-accent/20 rounded-interactive">
+      <div className="text-center p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
         <div className="flex items-center justify-center space-x-2 mb-2">
-          <Icon name="Clock" size={16} className="text-accent" />
-          <span className="text-sm font-medium text-accent">Estimated Timeline</span>
+          <Icon name="Clock" size={16} className="text-yellow-400" />
+          <span className="text-sm font-medium text-yellow-400">Estimated Timeline</span>
         </div>
-        <p className="text-xs text-muted-foreground font-caption">
+        <p className="text-xs text-gray-300 font-caption">
           Most donations receive their first pickup request within 24 hours
         </p>
       </div>

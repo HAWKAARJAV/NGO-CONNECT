@@ -28,7 +28,21 @@ export const donationService = {
       return { data: null, error }
     }
   },
-
+  // Get items listed by the current user (donor)
+  async getListedItems(userId) {
+    try {
+      const { data, error } = await supabase
+        .from('donations')
+        .select('*')
+        .eq('donor_id', userId)
+        .order('created_at', { ascending: false });
+      if (error) throw error;
+      return { data, error: null };
+    } catch (error) {
+      console.error('Error fetching listed items:', error);
+      return { data: null, error };
+    }
+  },
   // Create new donation
   async createDonation(donationData) {
     try {
@@ -50,7 +64,6 @@ export const donationService = {
       return { data: null, error }
     }
   },
-
   // Update donation
   async updateDonation(donationId, updates) {
     try {
@@ -63,7 +76,6 @@ export const donationService = {
       return { data: null, error }
     }
   },
-
   // Get available donations for NGOs
   async getAvailableDonations(filters = {}) {
     try {
@@ -97,7 +109,6 @@ export const donationService = {
       return { data: null, error }
     }
   },
-
   // Get donations for specific NGO
   async getNGODonations(ngoId) {
     try {
@@ -123,7 +134,6 @@ export const donationService = {
       return { data: null, error }
     }
   },
-
   // Approve donation (NGO action)
   async approveDonation(donationId, ngoId) {
     try {
@@ -151,7 +161,6 @@ export const donationService = {
       return { data: null, error }
     }
   },
-
   // Get donation statistics for user
   async getUserDonationStats(userId) {
     try {
@@ -178,7 +187,6 @@ export const donationService = {
       return { data: null, error }
     }
   },
-
   // Upload donation images
   async uploadDonationImages(files, donationId) {
     try {

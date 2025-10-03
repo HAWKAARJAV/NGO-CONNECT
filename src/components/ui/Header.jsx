@@ -1,263 +1,206 @@
 import React, { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../contexts/AuthContext';
+import { motion, AnimatePresence } from 'framer-motion';
+import { 
+  FaHeart, FaUsers, FaBuilding, FaSearch, FaBell, FaUser, 
+  FaChevronDown, FaSignOutAlt, FaCog, FaMoon, FaSun 
+} from 'react-icons/fa';
 import Icon from '../AppIcon';
 import Button from './Button';
 
 const Header = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
-  const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const location = useLocation();
   const navigate = useNavigate();
+  const { user, userProfile, signOut } = useAuth();
+  const [showUserMenu, setShowUserMenu] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [darkMode, setDarkMode] = useState(true);
 
-  const navigationItems = [
-    { label: 'Dashboard', path: '/donor-dashboard', icon: 'Home' },
-    { label: 'Donate Items', path: '/item-donation-listing', icon: 'Gift' },
-    { label: 'Find NGOs', path: '/ngo-discovery-and-matching', icon: 'Search' },
-    { label: 'Track Impact', path: '/impact-tracking-and-proof-verification', icon: 'BarChart3' }
-  ];
-
-  const moreItems = [
-    { label: 'NGO Dashboard', path: '/ngo-dashboard-post-verification', icon: 'Building' },
-    { label: 'Settings', path: '/settings', icon: 'Settings' },
-    { label: 'Help', path: '/help', icon: 'HelpCircle' }
-  ];
-
-  const notifications = [
-    { id: 1, title: 'Donation Approved', message: 'Your donation to Green Earth NGO has been approved', time: '2 min ago', unread: true },
-    { id: 2, title: 'Impact Update', message: 'See how your donation helped 50 families', time: '1 hour ago', unread: true },
-    { id: 3, title: 'New NGO Match', message: 'Found 3 NGOs near your location', time: '3 hours ago', unread: false }
-  ];
-
-  const handleNavigation = (path) => {
-    navigate(path);
-    setIsMenuOpen(false);
+  const handleLogout = async () => {
+    try {
+      await signOut();
+      navigate('/');
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
   };
 
-  const handleNotificationClick = (notification) => {
-    setIsNotificationOpen(false);
-    // Handle notification action
+  const getUserDisplayName = () => {
+    if (userProfile?.full_name) return userProfile.full_name;
+    if (user?.email) return user.email.split('@')[0];
+    return 'User';
   };
 
-  const handleLogout = () => {
-    navigate('/authentication-screen-login-register');
-    setIsProfileOpen(false);
+  const getRoleDisplayName = () => {
+    switch (userProfile?.role) {
+      case 'donor': return 'Donor';
+      case 'ngo': return 'NGO';
+      case 'funding_organization': return 'Funding Organization';
+      default: return 'User';
+    }
   };
 
-  const isActive = (path) => location?.pathname === path;
+  const getRoleIcon = () => {
+    switch (userProfile?.role) {
+      case 'donor': return FaHeart;
+      case 'ngo': return FaUsers;
+      case 'funding_organization': return FaBuilding;
+      default: return FaUser;
+    }
+  };
+
+  const getRoleColor = () => {
+    switch (userProfile?.role) {
+      case 'donor': return 'from-red-500 to-pink-500';
+      case 'ngo': return 'from-blue-500 to-cyan-500';
+      case 'funding_organization': return 'from-green-500 to-emerald-500';
+      default: return 'from-purple-500 to-pink-500';
+    }
+  };
+
+  if (!user) return null;
+
+  const RoleIcon = getRoleIcon();
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-card border-b border-border shadow-subtle">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <motion.header
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      className="sticky top-0 z-50 border-b shadow-2xl bg-slate-900/95 backdrop-blur-md border-white/10"
+    >
+      <div className="container px-4 mx-auto">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <div className="flex items-center">
-            <button
-              onClick={() => navigate('/donor-dashboard')}
-              className="flex items-center space-x-2 transition-smooth hover:opacity-80"
-            >
-              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                <Icon name="Heart" size={20} color="white" />
-              </div>
-              <span className="text-xl font-heading font-bold text-foreground">
-                DonateConnect
-              </span>
-            </button>
-          </div>
-
-          {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-1">
-            {navigationItems?.map((item) => (
-              <button
-                key={item?.path}
-                onClick={() => handleNavigation(item?.path)}
-                className={`flex items-center space-x-2 px-3 py-2 rounded-interactive text-sm font-medium transition-smooth ${
-                  isActive(item?.path)
-                    ? 'bg-primary text-primary-foreground'
-                    : 'text-muted-foreground hover:text-foreground hover:bg-muted'
-                }`}
-              >
-                <Icon name={item?.icon} size={16} />
-                <span>{item?.label}</span>
-              </button>
-            ))}
-            
-            {/* More Menu */}
-            <div className="relative">
-              <button
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="flex items-center space-x-2 px-3 py-2 rounded-interactive text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-smooth"
-              >
-                <Icon name="MoreHorizontal" size={16} />
-                <span>More</span>
-              </button>
-              
-              {isMenuOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-popover border border-border rounded-interactive shadow-pronounced z-50">
-                  {moreItems?.map((item) => (
-                    <button
-                      key={item?.path}
-                      onClick={() => handleNavigation(item?.path)}
-                      className="flex items-center space-x-2 w-full px-3 py-2 text-sm text-popover-foreground hover:bg-muted transition-smooth first:rounded-t-interactive last:rounded-b-interactive"
-                    >
-                      <Icon name={item?.icon} size={16} />
-                      <span>{item?.label}</span>
-                    </button>
-                  ))}
-                </div>
-              )}
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            className="flex items-center space-x-3 cursor-pointer"
+            onClick={() => navigate('/dashboard')}
+          >
+            <div className="flex items-center justify-center w-10 h-10 shadow-lg bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl">
+              <FaHeart className="w-6 h-6 text-white" />
             </div>
-          </nav>
+            <span className="text-2xl font-bold text-transparent bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text">
+              NGO-CONNECT
+            </span>
+          </motion.div>
+
+          {/* Navigation Removed */}
 
           {/* Right Side Actions */}
-          <div className="flex items-center space-x-3">
-            {/* Search */}
-            <button className="p-2 text-muted-foreground hover:text-foreground hover:bg-muted rounded-interactive transition-smooth">
-              <Icon name="Search" size={20} />
-            </button>
+          <div className="flex items-center space-x-4">
+            {/* Search Removed */}
 
             {/* Notifications */}
-            <div className="relative">
-              <button
-                onClick={() => setIsNotificationOpen(!isNotificationOpen)}
-                className="relative p-2 text-muted-foreground hover:text-foreground hover:bg-muted rounded-interactive transition-smooth"
-              >
-                <Icon name="Bell" size={20} />
-                {notifications?.some(n => n?.unread) && (
-                  <span className="absolute -top-1 -right-1 w-3 h-3 bg-accent rounded-full"></span>
-                )}
-              </button>
-
-              {isNotificationOpen && (
-                <div className="absolute right-0 mt-2 w-80 bg-popover border border-border rounded-interactive shadow-pronounced z-50">
-                  <div className="p-3 border-b border-border">
-                    <h3 className="font-heading font-semibold text-popover-foreground">Notifications</h3>
-                  </div>
-                  <div className="max-h-64 overflow-y-auto">
-                    {notifications?.map((notification) => (
-                      <button
-                        key={notification?.id}
-                        onClick={() => handleNotificationClick(notification)}
-                        className="w-full p-3 text-left hover:bg-muted transition-smooth border-b border-border last:border-b-0"
-                      >
-                        <div className="flex items-start justify-between">
-                          <div className="flex-1">
-                            <p className="text-sm font-medium text-popover-foreground">
-                              {notification?.title}
-                            </p>
-                            <p className="text-xs text-muted-foreground mt-1">
-                              {notification?.message}
-                            </p>
-                            <p className="text-xs text-muted-foreground mt-1 font-caption">
-                              {notification?.time}
-                            </p>
-                          </div>
-                          {notification?.unread && (
-                            <div className="w-2 h-2 bg-accent rounded-full mt-1"></div>
-                          )}
-                        </div>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Profile */}
-            <div className="relative">
-              <button
-                onClick={() => setIsProfileOpen(!isProfileOpen)}
-                className="flex items-center space-x-2 p-1 rounded-interactive hover:bg-muted transition-smooth"
-              >
-                <div className="w-8 h-8 bg-secondary rounded-full flex items-center justify-center">
-                  <Icon name="User" size={16} color="white" />
-                </div>
-                <Icon name="ChevronDown" size={16} className="text-muted-foreground hidden sm:block" />
-              </button>
-
-              {isProfileOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-popover border border-border rounded-interactive shadow-pronounced z-50">
-                  <div className="p-3 border-b border-border">
-                    <p className="text-sm font-medium text-popover-foreground">John Donor</p>
-                    <p className="text-xs text-muted-foreground font-caption">Verified Donor</p>
-                  </div>
-                  <button
-                    onClick={() => {
-                      setIsProfileOpen(false);
-                      navigate('/profile');
-                    }}
-                    className="flex items-center space-x-2 w-full px-3 py-2 text-sm text-popover-foreground hover:bg-muted transition-smooth"
-                  >
-                    <Icon name="User" size={16} />
-                    <span>Profile</span>
-                  </button>
-                  <button
-                    onClick={() => {
-                      setIsProfileOpen(false);
-                      navigate('/settings');
-                    }}
-                    className="flex items-center space-x-2 w-full px-3 py-2 text-sm text-popover-foreground hover:bg-muted transition-smooth"
-                  >
-                    <Icon name="Settings" size={16} />
-                    <span>Settings</span>
-                  </button>
-                  <button
-                    onClick={handleLogout}
-                    className="flex items-center space-x-2 w-full px-3 py-2 text-sm text-destructive hover:bg-muted transition-smooth rounded-b-interactive"
-                  >
-                    <Icon name="LogOut" size={16} />
-                    <span>Logout</span>
-                  </button>
-                </div>
-              )}
-            </div>
-
-            {/* Mobile Menu Button */}
-            <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="lg:hidden p-2 text-muted-foreground hover:text-foreground hover:bg-muted rounded-interactive transition-smooth"
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              onClick={() => setShowNotifications(!showNotifications)}
+              className="relative p-2 text-gray-400 transition-colors rounded-lg hover:text-white hover:bg-white/10"
             >
-              <Icon name={isMenuOpen ? "X" : "Menu"} size={20} />
-            </button>
+              <FaBell className="w-5 h-5" />
+              <span className="absolute flex items-center justify-center w-4 h-4 text-xs text-white bg-red-500 rounded-full -top-1 -right-1">
+                3
+              </span>
+            </motion.button>
+
+            {/* Theme Toggle Removed */}
+
+            {/* User Menu */}
+            <div className="relative">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                onClick={() => setShowUserMenu(!showUserMenu)}
+                className="flex items-center p-2 space-x-3 transition-colors rounded-lg hover:bg-white/10"
+              >
+                <div className={`w-10 h-10 bg-gradient-to-r ${getRoleColor()} rounded-full flex items-center justify-center shadow-lg`}>
+                  <RoleIcon className="w-5 h-5 text-white" />
+                </div>
+                <div className="hidden text-left md:block">
+                  <p className="text-sm font-medium text-white">{getUserDisplayName()}</p>
+                  <p className="text-xs text-gray-400">{getRoleDisplayName()}</p>
+                </div>
+                <FaChevronDown className="w-4 h-4 text-gray-400" />
+              </motion.button>
+
+              <AnimatePresence>
+                {showUserMenu && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                    className="absolute right-0 z-50 w-56 py-2 mt-2 border shadow-2xl bg-slate-800 rounded-xl border-white/10"
+                  >
+                    <div className="px-4 py-3 border-b border-white/10">
+                      <p className="text-sm font-medium text-white">{getUserDisplayName()}</p>
+                      <p className="text-xs text-gray-400">{user?.email}</p>
+                    </div>
+                    
+                    <div className="py-2">
+                      <button className="flex items-center w-full gap-2 px-4 py-2 text-sm text-left text-gray-300 transition-colors hover:bg-white/10">
+                        <FaUser className="w-4 h-4" />
+                        Profile
+                      </button>
+                      <button className="flex items-center w-full gap-2 px-4 py-2 text-sm text-left text-gray-300 transition-colors hover:bg-white/10">
+                        <FaCog className="w-4 h-4" />
+                        Settings
+                      </button>
+                      <button
+                        onClick={handleLogout}
+                        className="flex items-center w-full gap-2 px-4 py-2 text-sm text-left text-red-400 transition-colors hover:bg-red-500/10"
+                      >
+                        <FaSignOutAlt className="w-4 h-4" />
+                        Sign Out
+                      </button>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           </div>
         </div>
+      </div>
 
-        {/* Mobile Navigation */}
-        {isMenuOpen && (
-          <div className="lg:hidden border-t border-border bg-card">
-            <nav className="py-2">
-              {navigationItems?.map((item) => (
-                <button
-                  key={item?.path}
-                  onClick={() => handleNavigation(item?.path)}
-                  className={`flex items-center space-x-3 w-full px-4 py-3 text-sm font-medium transition-smooth ${
-                    isActive(item?.path)
-                      ? 'bg-primary text-primary-foreground'
-                      : 'text-muted-foreground hover:text-foreground hover:bg-muted'
-                  }`}
-                >
-                  <Icon name={item?.icon} size={18} />
-                  <span>{item?.label}</span>
-                </button>
-              ))}
-              
-              <div className="border-t border-border mt-2 pt-2">
-                {moreItems?.map((item) => (
-                  <button
-                    key={item?.path}
-                    onClick={() => handleNavigation(item?.path)}
-                    className="flex items-center space-x-3 w-full px-4 py-3 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-smooth"
+      {/* Notifications Panel */}
+      <AnimatePresence>
+        {showNotifications && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            className="absolute left-0 right-0 border-b shadow-2xl top-full bg-slate-800 border-white/10"
+          >
+            <div className="container px-4 py-4 mx-auto">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+                {[
+                  { title: 'New Donation', message: 'You received a new donation request', time: '2 min ago', type: 'success' },
+                  { title: 'Impact Update', message: 'NGO uploaded proof of donation usage', time: '1 hour ago', type: 'info' },
+                  { title: 'Reminder', message: 'Don\'t forget to upload your monthly report', time: '3 hours ago', type: 'warning' }
+                ].map((notification, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                    className="p-4 transition-colors border rounded-lg cursor-pointer bg-white/5 border-white/10 hover:bg-white/10"
                   >
-                    <Icon name={item?.icon} size={18} />
-                    <span>{item?.label}</span>
-                  </button>
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <h4 className="text-sm font-medium text-white">{notification.title}</h4>
+                        <p className="mt-1 text-xs text-gray-400">{notification.message}</p>
+                        <p className="mt-2 text-xs text-gray-500">{notification.time}</p>
+                      </div>
+                      <div className={`w-2 h-2 rounded-full ${
+                        notification.type === 'success' ? 'bg-green-500' :
+                        notification.type === 'warning' ? 'bg-yellow-500' : 'bg-blue-500'
+                      }`}></div>
+                    </div>
+                  </motion.div>
                 ))}
               </div>
-            </nav>
-          </div>
+            </div>
+          </motion.div>
         )}
-      </div>
-    </header>
+      </AnimatePresence>
+    </motion.header>
   );
 };
 

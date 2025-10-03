@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Header from '../../components/ui/Header';
 import Breadcrumb from '../../components/ui/Breadcrumb';
 import Icon from '../../components/AppIcon';
@@ -12,6 +13,7 @@ import ReportsSection from './components/ReportsSection';
 import ActivityPanel from './components/ActivityPanel';
 
 const NGODashboard = () => {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('donations');
 
   // Mock data for NGO dashboard
@@ -419,7 +421,7 @@ const NGODashboard = () => {
                     variant="outline"
                     iconName="Plus"
                     fullWidth
-                    onClick={handleAddNewNeed}
+                    onClick={() => navigate('/item-donation-listing')}
                   >
                     Post New Need
                   </Button>
@@ -427,6 +429,7 @@ const NGODashboard = () => {
                     variant="outline"
                     iconName="Upload"
                     fullWidth
+                    onClick={() => navigate('/impact-tracking-and-proof-verification')}
                   >
                     Upload Usage Proof
                   </Button>
@@ -442,6 +445,7 @@ const NGODashboard = () => {
                     variant="outline"
                     iconName="Users"
                     fullWidth
+                    onClick={() => navigate('/ngo-discovery-and-matching')}
                   >
                     View Donors
                   </Button>

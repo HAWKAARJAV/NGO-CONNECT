@@ -13,8 +13,8 @@ const CategorySelector = ({ selectedCategory, onCategorySelect, error }) => {
 
   return (
     <div className="space-y-3">
-      <label className="block text-sm font-medium text-foreground">
-        Category <span className="text-destructive">*</span>
+      <label className="block text-sm font-medium text-white">
+        Category <span className="text-red-400">*</span>
       </label>
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
         {categories?.map((category) => (
@@ -23,31 +23,31 @@ const CategorySelector = ({ selectedCategory, onCategorySelect, error }) => {
             type="button"
             onClick={() => onCategorySelect(category?.id)}
             className={`
-              relative p-4 rounded-interactive border-2 transition-smooth text-center
+              relative p-4 rounded-lg border-2 transition-all duration-300 text-center bg-white/10 border-white/20
               ${selectedCategory === category?.id
-                ? 'border-primary bg-primary/5 shadow-subtle'
-                : 'border-border hover:border-primary/50 hover:bg-muted/50'
+                ? 'border-purple-500 bg-purple-500/20 shadow-lg'
+                : 'hover:border-purple-400/50 hover:bg-white/20'
               }
             `}
           >
             <div className={`
               w-12 h-12 mx-auto mb-2 rounded-full flex items-center justify-center
-              ${selectedCategory === category?.id ? 'bg-primary/10' : category?.bgColor}
+              ${selectedCategory === category?.id ? 'bg-purple-500/20' : 'bg-white/20'}
             `}>
               <Icon 
                 name={category?.icon} 
                 size={24} 
-                className={selectedCategory === category?.id ? 'text-primary' : category?.color}
+                className={selectedCategory === category?.id ? 'text-purple-400' : 'text-white'}
               />
             </div>
             <span className={`
-              text-sm font-medium
-              ${selectedCategory === category?.id ? 'text-primary' : 'text-foreground'}
+              text-sm font-medium text-white
+              ${selectedCategory === category?.id ? 'text-purple-400' : 'text-white'}
             `}>
               {category?.name}
             </span>
             {selectedCategory === category?.id && (
-              <div className="absolute -top-1 -right-1 w-5 h-5 bg-primary rounded-full flex items-center justify-center">
+              <div className="absolute -top-1 -right-1 w-5 h-5 bg-purple-500 rounded-full flex items-center justify-center">
                 <Icon name="Check" size={12} color="white" />
               </div>
             )}
@@ -55,7 +55,7 @@ const CategorySelector = ({ selectedCategory, onCategorySelect, error }) => {
         ))}
       </div>
       {error && (
-        <p className="text-sm text-destructive font-caption">{error}</p>
+        <p className="text-sm text-red-400 font-caption">{error}</p>
       )}
     </div>
   );

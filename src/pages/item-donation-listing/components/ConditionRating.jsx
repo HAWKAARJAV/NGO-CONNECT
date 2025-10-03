@@ -39,10 +39,10 @@ const ConditionRating = ({ condition, onConditionChange, error }) => {
 
   return (
     <div className="space-y-3">
-      <label className="block text-sm font-medium text-foreground">
-        Item Condition <span className="text-destructive">*</span>
+      <label className="block text-sm font-medium text-white">
+        Item Condition <span className="text-red-400">*</span>
       </label>
-      <p className="text-xs text-muted-foreground font-caption">
+      <p className="text-xs text-gray-300 font-caption">
         Please be honest about the condition to help NGOs make informed decisions
       </p>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -52,38 +52,38 @@ const ConditionRating = ({ condition, onConditionChange, error }) => {
             type="button"
             onClick={() => onConditionChange(conditionOption?.id)}
             className={`
-              p-4 rounded-interactive border-2 transition-smooth text-left
+              p-4 rounded-lg border-2 transition-all duration-300 text-left bg-white/10 border-white/20
               ${condition === conditionOption?.id
-                ? 'border-primary bg-primary/5 shadow-subtle'
-                : 'border-border hover:border-primary/50 hover:bg-muted/50'
+                ? 'border-purple-500 bg-purple-500/20 shadow-lg'
+                : 'hover:border-purple-400/50 hover:bg-white/20'
               }
             `}
           >
             <div className="flex items-start space-x-3">
               <div className={`
                 w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0
-                ${condition === conditionOption?.id ? 'bg-primary/10' : conditionOption?.bgColor}
+                ${condition === conditionOption?.id ? 'bg-purple-500/20' : 'bg-white/20'}
               `}>
                 <Icon 
                   name={conditionOption?.icon} 
                   size={20} 
-                  className={condition === conditionOption?.id ? 'text-primary' : conditionOption?.color}
+                  className={condition === conditionOption?.id ? 'text-purple-400' : 'text-white'}
                 />
               </div>
               
               <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between">
                   <h4 className={`
-                    text-sm font-medium
-                    ${condition === conditionOption?.id ? 'text-primary' : 'text-foreground'}
+                    text-sm font-medium text-white
+                    ${condition === conditionOption?.id ? 'text-purple-400' : 'text-white'}
                   `}>
                     {conditionOption?.label}
                   </h4>
                   {condition === conditionOption?.id && (
-                    <Icon name="Check" size={16} className="text-primary" />
+                    <Icon name="Check" size={16} className="text-purple-400" />
                   )}
                 </div>
-                <p className="text-xs text-muted-foreground mt-1 font-caption">
+                <p className="text-xs text-gray-300 mt-1 font-caption">
                   {conditionOption?.description}
                 </p>
               </div>
@@ -92,7 +92,7 @@ const ConditionRating = ({ condition, onConditionChange, error }) => {
         ))}
       </div>
       {error && (
-        <p className="text-sm text-destructive font-caption">{error}</p>
+        <p className="text-sm text-red-400 font-caption">{error}</p>
       )}
     </div>
   );

@@ -29,7 +29,7 @@ const TrustSignals = () => {
     {
       name: 'Priya Sharma',
       role: 'Regular Donor',
-      content: 'DonateConnect made it so easy to find and help local NGOs. I can see exactly how my donations are being used.',
+      content: 'NGO-CONNECT made it so easy to find and help local NGOs. I can see exactly how my donations are being used.',
       avatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=64&h=64&fit=crop&crop=face'
     },
     {

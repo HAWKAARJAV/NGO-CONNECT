@@ -72,26 +72,26 @@ const LocationSelector = ({ location, onLocationChange, error }) => {
 
   return (
     <div className="space-y-4">
-      <label className="block text-sm font-medium text-foreground">
-        Pickup Location <span className="text-destructive">*</span>
+      <label className="block text-sm font-medium text-white">
+        Pickup Location <span className="text-red-400">*</span>
       </label>
       {/* Current Location Display */}
-      <div className="bg-muted/50 rounded-interactive p-4 border border-border">
+      <div className="bg-white/10 rounded-lg p-4 border border-white/20">
         <div className="flex items-start justify-between">
           <div className="flex-1">
             <div className="flex items-center space-x-2 mb-2">
-              <Icon name="MapPin" size={16} className="text-primary" />
-              <span className="text-sm font-medium text-foreground">
+              <Icon name="MapPin" size={16} className="text-purple-400" />
+              <span className="text-sm font-medium text-white">
                 {location?.isDetected ? 'Auto-detected Location' : 'Manual Location'}
               </span>
             </div>
             
             {location?.address ? (
-              <p className="text-sm text-muted-foreground font-caption">
+              <p className="text-sm text-gray-300 font-caption">
                 {location?.address}
               </p>
             ) : (
-              <p className="text-sm text-muted-foreground font-caption">
+              <p className="text-sm text-gray-300 font-caption">
                 No location set
               </p>
             )}
@@ -101,7 +101,7 @@ const LocationSelector = ({ location, onLocationChange, error }) => {
             type="button"
             onClick={detectLocation}
             disabled={isDetecting}
-            className="flex items-center space-x-1 text-sm text-primary hover:text-primary/80 transition-smooth disabled:opacity-50"
+            className="flex items-center space-x-1 text-sm text-purple-400 hover:text-purple-300 transition-colors disabled:opacity-50"
           >
             <Icon 
               name={isDetecting ? "Loader" : "Navigation"} 
@@ -115,11 +115,11 @@ const LocationSelector = ({ location, onLocationChange, error }) => {
       {/* Manual Address Entry */}
       <div className="space-y-3">
         <div className="flex items-center justify-between">
-          <span className="text-sm font-medium text-foreground">Manual Entry</span>
+          <span className="text-sm font-medium text-white">Manual Entry</span>
           <button
             type="button"
             onClick={() => setManualEntry(!manualEntry)}
-            className="text-sm text-primary hover:text-primary/80 transition-smooth"
+            className="text-sm text-purple-400 hover:text-purple-300 transition-colors"
           >
             {manualEntry ? 'Cancel' : 'Enter Manually'}
           </button>
@@ -146,7 +146,7 @@ const LocationSelector = ({ location, onLocationChange, error }) => {
       />
       {/* Map Preview */}
       {location?.coordinates && (
-        <div className="h-48 rounded-interactive overflow-hidden border border-border">
+        <div className="h-48 rounded-lg overflow-hidden border border-white/20">
           <iframe
             width="100%"
             height="100%"
@@ -159,7 +159,7 @@ const LocationSelector = ({ location, onLocationChange, error }) => {
         </div>
       )}
       {error && (
-        <p className="text-sm text-destructive font-caption">{error}</p>
+        <p className="text-sm text-red-400 font-caption">{error}</p>
       )}
     </div>
   );

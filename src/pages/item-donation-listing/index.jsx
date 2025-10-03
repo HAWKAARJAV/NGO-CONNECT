@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { FaArrowLeft } from 'react-icons/fa';
 import Header from '../../components/ui/Header';
 import Breadcrumb from '../../components/ui/Breadcrumb';
 import Button from '../../components/ui/Button';
@@ -255,8 +257,31 @@ const ItemDonationListing = () => {
 
   if (isSubmitted) {
     return (
-      <div className="min-h-screen bg-background">
-        <Header />
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+        {/* Custom Header with Back Button */}
+        <div className="relative z-20 flex items-center justify-between p-6">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="flex items-center space-x-4"
+          >
+            <button
+              onClick={() => navigate(-1)}
+              className="p-2 text-white border border-white/20 rounded-lg hover:bg-white/10 transition-all duration-300"
+            >
+              <FaArrowLeft className="w-5 h-5" />
+            </button>
+            <div className="flex items-center space-x-3">
+              <div className="w-10 h-10 bg-gradient-to-r from-green-500 to-emerald-500 rounded-lg flex items-center justify-center">
+                <Icon name="Check" className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h1 className="text-xl font-bold text-white">Donation Posted</h1>
+                <p className="text-gray-400">Your item has been successfully listed</p>
+              </div>
+            </div>
+          </motion.div>
+        </div>
         <main className="pt-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <ConfirmationScreen
@@ -271,8 +296,32 @@ const ItemDonationListing = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <Header />
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+      {/* Custom Header with Back Button */}
+      <div className="relative z-20 flex items-center justify-between p-6">
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          className="flex items-center space-x-4"
+        >
+          <button
+            onClick={() => navigate('/dashboard')}
+            className="p-2 text-white border border-white/20 rounded-lg hover:bg-white/10 transition-all duration-300"
+          >
+            <FaArrowLeft className="w-5 h-5" />
+          </button>
+          <div className="flex items-center space-x-3">
+            <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
+              <Icon name="Package" className="w-6 h-6 text-white" />
+            </div>
+            <div>
+              <h1 className="text-xl font-bold text-white">Item Donation</h1>
+              <p className="text-gray-400">Create your donation listing</p>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
       <main className="pt-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <Breadcrumb />
@@ -281,10 +330,10 @@ const ItemDonationListing = () => {
           <div className="mb-8">
             <div className="flex items-center justify-between mb-4">
               <div>
-                <h1 className="text-2xl font-heading font-bold text-foreground">
+                <h1 className="text-2xl font-heading font-bold text-white">
                   Create Donation Listing
                 </h1>
-                <p className="text-muted-foreground font-caption">
+                <p className="text-gray-300 font-caption">
                   Share your items with NGOs in need and make a difference in your community
                 </p>
               </div>
@@ -292,7 +341,7 @@ const ItemDonationListing = () => {
               {/* Draft Status */}
               {isDraft && (
                 <div className="flex items-center space-x-2">
-                  <div className="flex items-center space-x-1 text-sm text-muted-foreground">
+                  <div className="flex items-center space-x-1 text-sm text-gray-300">
                     <Icon name="Save" size={14} />
                     <span className="font-caption">Draft saved</span>
                   </div>
@@ -318,7 +367,7 @@ const ItemDonationListing = () => {
           />
 
           {/* Form Content */}
-          <div className="bg-card border border-border rounded-interactive shadow-subtle">
+          <div className="presentation-card border border-white/20 rounded-2xl shadow-2xl">
             <div className="p-6 lg:p-8">
               {/* Step 1: Category Selection */}
               {currentStep === 1 && (
@@ -346,8 +395,8 @@ const ItemDonationListing = () => {
                   />
 
                   <div className="space-y-2">
-                    <label className="block text-sm font-medium text-foreground">
-                      Description <span className="text-destructive">*</span>
+                    <label className="block text-sm font-medium text-white">
+                      Description <span className="text-red-400">*</span>
                     </label>
                     <textarea
                       placeholder="Describe your items in detail. Include size, brand, condition, and any other relevant information..."
@@ -355,43 +404,43 @@ const ItemDonationListing = () => {
                       onChange={(e) => updateFormData('description', e?.target?.value)}
                       rows={4}
                       maxLength={500}
-                      className="w-full px-3 py-2 border border-border rounded-interactive focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-none"
+                      className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
                     />
                     <div className="flex justify-between items-center">
                       {errors?.description && (
-                        <p className="text-sm text-destructive font-caption">{errors?.description}</p>
+                        <p className="text-sm text-red-400 font-caption">{errors?.description}</p>
                       )}
-                      <p className="text-xs text-muted-foreground font-caption ml-auto">
+                      <p className="text-xs text-gray-400 font-caption ml-auto">
                         {formData?.description?.length}/500 characters
                       </p>
                     </div>
                   </div>
 
                   <div className="space-y-2">
-                    <label className="block text-sm font-medium text-foreground">
-                      Quantity <span className="text-destructive">*</span>
+                    <label className="block text-sm font-medium text-white">
+                      Quantity <span className="text-red-400">*</span>
                     </label>
                     <div className="flex items-center space-x-3">
                       <button
                         type="button"
                         onClick={() => updateFormData('quantity', Math.max(1, formData?.quantity - 1))}
-                        className="w-10 h-10 border border-border rounded-interactive flex items-center justify-center hover:bg-muted transition-smooth"
+                        className="w-10 h-10 border border-white/20 rounded-lg flex items-center justify-center hover:bg-white/10 transition-colors text-white"
                       >
                         <Icon name="Minus" size={16} />
                       </button>
-                      <span className="text-lg font-mono font-semibold text-foreground min-w-[3rem] text-center">
+                      <span className="text-lg font-mono font-semibold text-white min-w-[3rem] text-center">
                         {formData?.quantity}
                       </span>
                       <button
                         type="button"
                         onClick={() => updateFormData('quantity', formData?.quantity + 1)}
-                        className="w-10 h-10 border border-border rounded-interactive flex items-center justify-center hover:bg-muted transition-smooth"
+                        className="w-10 h-10 border border-white/20 rounded-lg flex items-center justify-center hover:bg-white/10 transition-colors text-white"
                       >
                         <Icon name="Plus" size={16} />
                       </button>
                     </div>
                     {errors?.quantity && (
-                      <p className="text-sm text-destructive font-caption">{errors?.quantity}</p>
+                      <p className="text-sm text-red-400 font-caption">{errors?.quantity}</p>
                     )}
                   </div>
                 </div>
@@ -433,7 +482,7 @@ const ItemDonationListing = () => {
             </div>
 
             {/* Form Actions */}
-            <div className="border-t border-border p-6 lg:p-8">
+            <div className="border-t border-white/20 p-6 lg:p-8">
               <div className="flex flex-col sm:flex-row gap-3 justify-between">
                 <div className="flex gap-3">
                   {currentStep > 1 && (
@@ -442,16 +491,18 @@ const ItemDonationListing = () => {
                       onClick={handlePrevious}
                       iconName="ChevronLeft"
                       iconPosition="left"
+                      className="border-gray-400 hover:border-yellow-400 hover:bg-yellow-100/10 text-gray-200 hover:text-yellow-400"
                     >
                       Previous
                     </Button>
                   )}
                   
                   <Button
-                    variant="ghost"
+                    variant="outline"
                     onClick={handleSaveDraft}
                     iconName="Save"
                     iconPosition="left"
+                    className="border-gray-400 hover:border-yellow-400 hover:bg-yellow-100/10 text-gray-200 hover:text-yellow-400"
                   >
                     Save Draft
                   </Button>
@@ -484,15 +535,15 @@ const ItemDonationListing = () => {
           </div>
 
           {/* Help Section */}
-          <div className="mt-8 bg-muted/50 rounded-interactive p-6">
+          <div className="mt-8 presentation-card p-6">
             <div className="flex items-start space-x-3">
-              <Icon name="HelpCircle" size={20} className="text-primary flex-shrink-0 mt-0.5" />
+              <Icon name="HelpCircle" size={20} className="text-purple-400 flex-shrink-0 mt-0.5" />
               <div>
-                <h3 className="text-sm font-medium text-foreground mb-2">Need Help?</h3>
-                <p className="text-xs text-muted-foreground font-caption mb-3">
+                <h3 className="text-sm font-medium text-white mb-2">Need Help?</h3>
+                <p className="text-xs text-gray-300 font-caption mb-3">
                   Having trouble creating your donation listing? Here are some tips:
                 </p>
-                <ul className="text-xs text-muted-foreground font-caption space-y-1">
+                <ul className="text-xs text-gray-300 font-caption space-y-1">
                   <li>• Be specific in your item description to help NGOs understand what you're offering</li>
                   <li>• Add photos to increase the chances of your donation being picked up</li>
                   <li>• Set realistic pickup times that work with your schedule</li>

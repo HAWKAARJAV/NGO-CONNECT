@@ -1,18 +1,17 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FaHeart, FaUsers, FaBuilding, FaArrowRight, FaCheck } from 'react-icons/fa';
+import RoleSelectionCard from './RoleSelectionCard';
+import { useAuth } from '../../../contexts/AuthContext';
 import Input from '../../../components/ui/Input';
 import Button from '../../../components/ui/Button';
 import Select from '../../../components/ui/Select';
 
-
-import RoleSelectionCard from './RoleSelectionCard';
-
-import { useAuth } from '../../../contexts/AuthContext';
-
 const RegisterForm = ({ onSwitchToLogin }) => {
   const navigate = useNavigate();
   const { signUp } = useAuth();
-  const [currentStep, setCurrentStep] = useState(1); // 1: Role, 2: Details
+  const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
     role: '',
     fullName: '',
@@ -20,7 +19,7 @@ const RegisterForm = ({ onSwitchToLogin }) => {
     password: '',
     confirmPassword: '',
     phoneNumber: '',
-    organizationName: '', // For NGO/Funding org
+    organizationName: '',
     city: '',
     state: ''
   });
@@ -32,37 +31,40 @@ const RegisterForm = ({ onSwitchToLogin }) => {
       id: 'donor',
       title: 'Donor',
       description: 'I want to donate items or funds to NGOs',
-      icon: 'Heart',
+      icon: FaHeart,
       features: [
         'Donate items & funds',
         'Track donation impact',
         'Discover nearby NGOs',
         'Get tax receipts'
-      ]
+      ],
+      color: 'from-red-500 to-pink-500'
     },
     {
       id: 'ngo',
       title: 'NGO',
       description: 'I represent an NGO looking for donations',
-      icon: 'Users',
+      icon: FaUsers,
       features: [
         'Post specific needs',
         'Receive donations',
         'Upload impact proofs',
         'Manage beneficiaries'
-      ]
+      ],
+      color: 'from-blue-500 to-cyan-500'
     },
     {
       id: 'funding_organization',
       title: 'Funding Organization',
       description: 'I represent a corporate or foundation',
-      icon: 'Building',
+      icon: FaBuilding,
       features: [
         'Fund multiple NGOs',
         'CSR compliance',
         'Impact reporting',
         'Partnership opportunities'
-      ]
+      ],
+      color: 'from-green-500 to-emerald-500'
     }
   ];
 
@@ -82,7 +84,6 @@ const RegisterForm = ({ onSwitchToLogin }) => {
       [name]: value
     }));
     
-    // Clear error when user starts typing
     if (errors?.[name]) {
       setErrors(prev => ({
         ...prev,
@@ -140,7 +141,6 @@ const RegisterForm = ({ onSwitchToLogin }) => {
       newErrors.phoneNumber = 'Please enter a valid Indian mobile number';
     }
     
-    // Organization name required for NGO and funding organizations
     if ((formData?.role === 'ngo' || formData?.role === 'funding_organization') && !formData?.organizationName) {
       newErrors.organizationName = 'Organization name is required';
     }
@@ -194,9 +194,21 @@ const RegisterForm = ({ onSwitchToLogin }) => {
         return;
       }
 
-      // Registration successful - show success message
-      alert('Registration successful! Please check your email to verify your account, then sign in.');
-      onSwitchToLogin();
+      // Check if user was created or signed in
+      if (data?.session) {
+        // User is signed in, redirect to dashboard
+        navigate('/dashboard');
+      } else if (data?.user) {
+        // User was created successfully, show success message and switch to login
+        setErrors({ 
+          success: 'Registration successful! You can now sign in with your email and password.' 
+        });
+        
+        // Switch to login form after 2 seconds
+        setTimeout(() => {
+          onSwitchToLogin();
+        }, 2000);
+      }
       
     } catch (error) {
       console.error('Registration error:', error);
@@ -210,44 +222,79 @@ const RegisterForm = ({ onSwitchToLogin }) => {
 
   if (currentStep === 1) {
     return (
-      <div className="space-y-6">
-        <div className="text-center mb-6">
-          <h2 className="text-xl font-heading font-semibold text-foreground mb-2">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="space-y-6"
+      >
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-6 text-center"
+        >
+          <h2 className="mb-3 text-2xl font-bold text-white">
             Choose Your Role
           </h2>
-          <p className="text-sm text-muted-foreground">
-            Select how you would like to use DonateConnect
+          <p className="text-gray-300">
+            Select how you would like to use NGO-CONNECT
           </p>
-        </div>
+        </motion.div>
 
         {errors?.general && (
-          <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-3 text-sm text-destructive">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="p-4 text-sm text-red-300 border bg-red-500/20 border-red-500/30 rounded-xl backdrop-blur-sm"
+          >
             {errors?.general}
-          </div>
+          </motion.div>
         )}
 
-        <div className="space-y-4">
-          {roles?.map((role) => (
-            <RoleSelectionCard
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="space-y-4"
+        >
+          {roles?.map((role, index) => (
+            <motion.div
               key={role?.id}
-              role={role}
-              isSelected={formData?.role === role?.id}
-              onSelect={handleRoleSelect}
-            />
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.1 + index * 0.1 }}
+            >
+              <RoleSelectionCard
+                role={role}
+                isSelected={formData?.role === role?.id}
+                onSelect={handleRoleSelect}
+              />
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
         {errors?.role && (
-          <p className="text-sm text-destructive">{errors?.role}</p>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="text-sm text-center text-red-400"
+          >
+            {errors?.role}
+          </motion.p>
         )}
 
-        <div className="flex space-x-3">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+          className="flex space-x-3"
+        >
           <Button
             type="button"
             variant="outline"
             onClick={onSwitchToLogin}
             disabled={loading}
             fullWidth
+            className="text-white border-white/20 hover:bg-white/10 hover:border-white/30"
           >
             Back to Login
           </Button>
@@ -257,34 +304,106 @@ const RegisterForm = ({ onSwitchToLogin }) => {
             onClick={handleNext}
             disabled={!formData?.role || loading}
             fullWidth
+            className="font-semibold text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
           >
-            Continue
+            <span>Continue</span>
+            <FaArrowRight className="w-4 h-4 ml-2" />
           </Button>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     );
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-xl font-heading font-semibold text-foreground">
+    <motion.form
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      onSubmit={handleSubmit}
+      className="space-y-6"
+    >
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="flex items-center justify-between mb-6"
+      >
+        <h2 className="text-2xl font-bold text-white">
           Create Account
         </h2>
-        <div className="text-sm text-muted-foreground">
+        <div className="px-3 py-1 text-sm text-gray-300 rounded-full bg-white/10">
           Step 2 of 2
         </div>
-      </div>
+      </motion.div>
 
       {errors?.general && (
-        <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-3 text-sm text-destructive">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="p-4 text-sm text-red-300 border bg-red-500/20 border-red-500/30 rounded-xl backdrop-blur-sm"
+        >
           {errors?.general}
-        </div>
+        </motion.div>
       )}
 
+      {errors?.success && (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="p-4 text-sm text-green-300 border bg-green-500/20 border-green-500/30 rounded-xl backdrop-blur-sm"
+        >
+          {errors?.success}
+        </motion.div>
+      )}
+
+      {/* Auto-fill Demo Data Button */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.05 }}
+        className="p-4 border bg-white/5 border-white/10 rounded-xl backdrop-blur-sm"
+      >
+        <h4 className="mb-3 text-sm font-medium text-center text-gray-200">🚀 Quick Demo Data</h4>
+        <div className="grid grid-cols-1 gap-2">
+          <button
+            type="button"
+            onClick={() => {
+              setFormData({
+                ...formData,
+                fullName: 'Demo User',
+                email: 'demo@example.com',
+                password: 'password123',
+                confirmPassword: 'password123',
+                phoneNumber: '9876543210',
+                organizationName: formData?.role === 'ngo' ? 'Demo NGO Foundation' : 'Demo Funding Corp',
+                city: 'Mumbai',
+                state: 'Maharashtra'
+              });
+              setErrors({});
+            }}
+            disabled={loading}
+            className="flex items-center justify-center p-2 text-xs transition-all duration-200 border rounded-lg bg-gradient-to-r from-purple-500/20 to-pink-500/20 border-purple-500/30 hover:from-purple-500/30 hover:to-pink-500/30 hover:border-purple-400/50 disabled:opacity-50"
+          >
+            <div className="flex items-center space-x-2">
+              <FaCheck className="w-3 h-3 text-purple-400" />
+              <span className="font-medium text-white">Auto-fill Demo Data</span>
+            </div>
+          </button>
+        </div>
+        
+        <div className="mt-3 text-center">
+          <p className="text-xs text-gray-400">
+            💡 Fills all required fields with sample data for quick testing
+          </p>
+        </div>
+      </motion.div>
+
       {/* Full Name */}
-      <div className="space-y-2">
-        <label className="text-sm font-medium text-foreground">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1 }}
+        className="space-y-2"
+      >
+        <label className="text-sm font-medium text-gray-200">
           Full Name *
         </label>
         <Input
@@ -296,13 +415,28 @@ const RegisterForm = ({ onSwitchToLogin }) => {
           error={errors?.fullName}
           disabled={loading}
           required
+          className="text-white placeholder-gray-400 bg-white/10 border-white/20 focus:border-purple-400 focus:ring-purple-400/20"
         />
-      </div>
+        {errors?.fullName && (
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="text-sm text-red-400"
+          >
+            {errors?.fullName}
+          </motion.p>
+        )}
+      </motion.div>
 
       {/* Organization Name (for NGO/Funding org) */}
       {(formData?.role === 'ngo' || formData?.role === 'funding_organization') && (
-        <div className="space-y-2">
-          <label className="text-sm font-medium text-foreground">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15 }}
+          className="space-y-2"
+        >
+          <label className="text-sm font-medium text-gray-200">
             Organization Name *
           </label>
           <Input
@@ -314,13 +448,28 @@ const RegisterForm = ({ onSwitchToLogin }) => {
             error={errors?.organizationName}
             disabled={loading}
             required
+            className="text-white placeholder-gray-400 bg-white/10 border-white/20 focus:border-purple-400 focus:ring-purple-400/20"
           />
-        </div>
+          {errors?.organizationName && (
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="text-sm text-red-400"
+            >
+              {errors?.organizationName}
+            </motion.p>
+          )}
+        </motion.div>
       )}
 
       {/* Email */}
-      <div className="space-y-2">
-        <label className="text-sm font-medium text-foreground">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2 }}
+        className="space-y-2"
+      >
+        <label className="text-sm font-medium text-gray-200">
           Email Address *
         </label>
         <Input
@@ -332,12 +481,27 @@ const RegisterForm = ({ onSwitchToLogin }) => {
           error={errors?.email}
           disabled={loading}
           required
+          className="text-white placeholder-gray-400 bg-white/10 border-white/20 focus:border-purple-400 focus:ring-purple-400/20"
         />
-      </div>
+        {errors?.email && (
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="text-sm text-red-400"
+          >
+            {errors?.email}
+          </motion.p>
+        )}
+      </motion.div>
 
       {/* Phone Number */}
-      <div className="space-y-2">
-        <label className="text-sm font-medium text-foreground">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.25 }}
+        className="space-y-2"
+      >
+        <label className="text-sm font-medium text-gray-200">
           Phone Number *
         </label>
         <Input
@@ -349,13 +513,28 @@ const RegisterForm = ({ onSwitchToLogin }) => {
           error={errors?.phoneNumber}
           disabled={loading}
           required
+          className="text-white placeholder-gray-400 bg-white/10 border-white/20 focus:border-purple-400 focus:ring-purple-400/20"
         />
-      </div>
+        {errors?.phoneNumber && (
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="text-sm text-red-400"
+          >
+            {errors?.phoneNumber}
+          </motion.p>
+        )}
+      </motion.div>
 
       {/* Location */}
-      <div className="grid grid-cols-2 gap-4">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3 }}
+        className="grid grid-cols-2 gap-4"
+      >
         <div className="space-y-2">
-          <label className="text-sm font-medium text-foreground">
+          <label className="text-sm font-medium text-gray-200">
             City *
           </label>
           <Input
@@ -367,10 +546,20 @@ const RegisterForm = ({ onSwitchToLogin }) => {
             error={errors?.city}
             disabled={loading}
             required
+            className="text-white placeholder-gray-400 bg-white/10 border-white/20 focus:border-purple-400 focus:ring-purple-400/20"
           />
+          {errors?.city && (
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="text-sm text-red-400"
+            >
+              {errors?.city}
+            </motion.p>
+          )}
         </div>
         <div className="space-y-2">
-          <label className="text-sm font-medium text-foreground">
+          <label className="text-sm font-medium text-gray-200">
             State *
           </label>
           <Select
@@ -382,13 +571,28 @@ const RegisterForm = ({ onSwitchToLogin }) => {
             options={indianStates?.map(state => ({ value: state, label: state }))}
             placeholder="Select state"
             required
+            className="text-white placeholder-gray-400 bg-white/10 border-white/20 focus:border-purple-400 focus:ring-purple-400/20"
           />
+          {errors?.state && (
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="text-sm text-red-400"
+            >
+              {errors?.state}
+            </motion.p>
+          )}
         </div>
-      </div>
+      </motion.div>
 
       {/* Password */}
-      <div className="space-y-2">
-        <label className="text-sm font-medium text-foreground">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.35 }}
+        className="space-y-2"
+      >
+        <label className="text-sm font-medium text-gray-200">
           Password *
         </label>
         <Input
@@ -400,12 +604,27 @@ const RegisterForm = ({ onSwitchToLogin }) => {
           error={errors?.password}
           disabled={loading}
           required
+          className="text-white placeholder-gray-400 bg-white/10 border-white/20 focus:border-purple-400 focus:ring-purple-400/20"
         />
-      </div>
+        {errors?.password && (
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="text-sm text-red-400"
+          >
+            {errors?.password}
+          </motion.p>
+        )}
+      </motion.div>
 
       {/* Confirm Password */}
-      <div className="space-y-2">
-        <label className="text-sm font-medium text-foreground">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.4 }}
+        className="space-y-2"
+      >
+        <label className="text-sm font-medium text-gray-200">
           Confirm Password *
         </label>
         <Input
@@ -417,11 +636,26 @@ const RegisterForm = ({ onSwitchToLogin }) => {
           error={errors?.confirmPassword}
           disabled={loading}
           required
+          className="text-white placeholder-gray-400 bg-white/10 border-white/20 focus:border-purple-400 focus:ring-purple-400/20"
         />
-      </div>
+        {errors?.confirmPassword && (
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="text-sm text-red-400"
+          >
+            {errors?.confirmPassword}
+          </motion.p>
+        )}
+      </motion.div>
 
       {/* Action Buttons */}
-      <div className="flex space-x-3">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.45 }}
+        className="flex space-x-3"
+      >
         <Button
           type="button"
           variant="outline"
@@ -429,6 +663,7 @@ const RegisterForm = ({ onSwitchToLogin }) => {
           disabled={loading}
           iconName="ArrowLeft"
           iconPosition="left"
+          className="text-white border-white/20 hover:bg-white/10 hover:border-white/30"
         >
           Back
         </Button>
@@ -438,26 +673,32 @@ const RegisterForm = ({ onSwitchToLogin }) => {
           loading={loading}
           disabled={loading}
           fullWidth
+          className="font-semibold text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
         >
           {loading ? 'Creating Account...' : 'Create Account'}
         </Button>
-      </div>
+      </motion.div>
 
       {/* Switch to Login */}
-      <div className="text-center">
-        <span className="text-sm text-muted-foreground">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.5 }}
+        className="text-center"
+      >
+        <span className="text-sm text-gray-400">
           Already have an account?{' '}
         </span>
         <button
           type="button"
           onClick={onSwitchToLogin}
-          className="text-sm text-primary hover:text-primary/80 transition-smooth font-medium"
+          className="text-sm font-medium text-purple-400 transition-colors hover:text-purple-300 hover:underline"
           disabled={loading}
         >
           Sign In
         </button>
-      </div>
-    </form>
+      </motion.div>
+    </motion.form>
   );
 };
 
