@@ -60,6 +60,7 @@ const FundingOrgDashboard = () => {
     { id: 'browse', label: 'Browse NGOs', icon: 'Building' },
     { id: 'problems', label: 'View Problems', icon: 'AlertTriangle' },
     { id: 'contests', label: 'Create Contests', icon: 'Trophy' },
+    { id: 'csr_funding', label: 'CSR Funding Required', icon: 'Handshake' },
     { id: 'reports', label: 'CSR Reports', icon: 'FileText' }
   ];
 
@@ -128,6 +129,27 @@ const FundingOrgDashboard = () => {
             {activeTab === 'browse' && <NGOBrowseSection />}
             {activeTab === 'problems' && <ProblemsSection />}
             {activeTab === 'contests' && <ContestSection />}
+            {activeTab === 'csr_funding' && (
+              <div className="p-6 bg-card border border-border rounded-lg">
+                <h3 className="mb-2 text-lg font-semibold text-foreground">CSR Funding Required</h3>
+                <p className="text-sm text-muted-foreground">View NGO requests that need corporate funding and filter by sector, amount and location.</p>
+
+                <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
+                  <div className="p-4 border rounded-lg bg-white/5">
+                    <h4 className="text-sm font-medium text-foreground">No. of Requests</h4>
+                    <p className="mt-1 text-2xl font-bold text-foreground">12</p>
+                  </div>
+                  <div className="p-4 border rounded-lg bg-white/5">
+                    <h4 className="text-sm font-medium text-foreground">Suggested Match</h4>
+                    <p className="mt-1 text-sm text-muted-foreground">Showcase shortlisted NGOs for corporate outreach.</p>
+                  </div>
+                </div>
+
+                <div className="mt-6">
+                  <Button variant="default" onClick={() => console.log('Open CSR listings')}>Browse CSR Requests</Button>
+                </div>
+              </div>
+            )}
             {activeTab === 'reports' && <CSRReportsSection />}
           </div>
         </div>

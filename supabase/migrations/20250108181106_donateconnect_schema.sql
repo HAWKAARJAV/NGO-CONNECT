@@ -49,6 +49,7 @@ CREATE TABLE public.ngo_profiles (
     geographical_reach TEXT,
     compliance_score INTEGER DEFAULT 0,
     verification_documents JSONB,
+    csr_funding_required BOOLEAN DEFAULT false,
     created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
 );

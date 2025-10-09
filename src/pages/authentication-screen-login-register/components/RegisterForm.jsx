@@ -314,6 +314,79 @@ const RegisterForm = ({ onSwitchToLogin }) => {
     );
   }
 
+  // If the selected role is NGO, we show a single verification CTA that
+  // opens the external Google verification form. No other input fields
+  // are requested at registration for NGOs per product requirement.
+  if (formData?.role === 'ngo') {
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="space-y-6"
+      >
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-6 text-center"
+        >
+          <h2 className="mb-3 text-2xl font-bold text-white">NGO Verification</h2>
+          <p className="text-gray-300">To register as an NGO, please complete our verification form. This helps us validate your organization before granting NGO access.</p>
+        </motion.div>
+
+        {errors?.general && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="p-4 text-sm text-red-300 border bg-red-500/20 border-red-500/30 rounded-xl backdrop-blur-sm"
+          >
+            {errors?.general}
+          </motion.div>
+        )}
+
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="p-4 border bg-white/5 border-white/10 rounded-xl backdrop-blur-sm text-center"
+        >
+          <p className="mb-4 text-sm text-gray-200">Click the button below to open the NGO verification form (opens in a new tab).</p>
+          <div className="flex items-center justify-center space-x-3">
+            <a
+              href="https://docs.google.com/forms/d/e/1FAIpQLSfpEpgoRRZ2ywD8SDf8zf30KED53LKk2A1DDbw78W5UcQh8YA/viewform?usp=header"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Button
+                type="button"
+                variant="default"
+                className="font-semibold text-white bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600"
+              >
+                Get Verified
+              </Button>
+            </a>
+          </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15 }}
+          className="flex space-x-3"
+        >
+          <Button
+            type="button"
+            variant="outline"
+            onClick={handleBack}
+            disabled={loading}
+            className="text-white border-white/20 hover:bg-white/10 hover:border-white/30"
+          >
+            Back
+          </Button>
+        </motion.div>
+      </motion.div>
+    );
+  }
+
   return (
     <motion.form
       initial={{ opacity: 0 }}

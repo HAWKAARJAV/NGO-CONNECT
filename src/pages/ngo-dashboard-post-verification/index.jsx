@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useAuth } from '../../contexts/AuthContext';
+import { supabase } from '../../lib/supabase';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/ui/Header';
 import Breadcrumb from '../../components/ui/Breadcrumb';
@@ -61,6 +63,49 @@ const NGODashboard = () => {
       color: "accent"
     }
   ];
+
+  // CSR Funding modal state
+  const [showCsrModal, setShowCsrModal] = useState(false);
+  const [csrApplied, setCsrApplied] = useState(false);
+  // Get NGO id from AuthContext
+  const { userProfile } = useAuth();
+  const ngoId = userProfile?.ngo_profiles?.id;
+  const [csrFormChecked, setCsrFormChecked] = useState(false);
+
+  const handleOpenCsrModal = () => setShowCsrModal(true);
+  const handleCloseCsrModal = () => setShowCsrModal(false);
+
+  const handleCsrSubmit = async () => {
+    // Update csr_funding_required in ngo_profiles
+    if (!ngoId) return;
+    const { error } = await supabase
+      .from('ngo_profiles')
+      .update({ csr_funding_required: true })
+      .eq('id', ngoId);
+    if (!error) {
+      setCsrApplied(true);
+      setShowCsrModal(false);
+      setCsrFormChecked(false);
+    } else {
+      alert('Failed to apply for CSR funding. Please try again.');
+    }
+  };
+
+  // Fetch CSR status on mount
+  useEffect(() => {
+    const fetchCsrStatus = async () => {
+      if (!ngoId) return;
+      const { data, error } = await supabase
+        .from('ngo_profiles')
+        .select('csr_funding_required')
+        .eq('id', ngoId)
+        .single();
+      if (!error && data) {
+        setCsrApplied(!!data.csr_funding_required);
+      }
+    };
+    fetchCsrStatus();
+  }, [ngoId]);
 
   const donationsData = [
     {
@@ -449,6 +494,20 @@ const NGODashboard = () => {
                   >
                     View Donors
                   </Button>
+                  {csrApplied ? (
+                    <div className="flex items-center justify-center py-2">
+                      <span className="text-green-600 font-semibold">You have applied for CSR Funding</span>
+                    </div>
+                  ) : (
+                    <Button
+                      variant="outline"
+                      iconName="Briefcase"
+                      fullWidth
+                      onClick={handleOpenCsrModal}
+                    >
+                      CSR Funding
+                    </Button>
+                  )}
                 </div>
               </div>
 
@@ -482,6 +541,49 @@ const NGODashboard = () => {
           </div>
         </div>
       </main>
+
+      {/* CSR Funding Modal */}
+      {showCsrModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div className="absolute inset-0 bg-black/50" onClick={handleCloseCsrModal} />
+          <div className="relative w-full max-w-md p-6 mx-4 bg-white rounded-lg shadow-xl">
+            <div className="flex items-start justify-between">
+              <div>
+                <h2 className="text-xl font-bold text-foreground">CSR Funding Application</h2>
+                <p className="mt-1 text-sm text-muted-foreground">To apply for CSR funding, please fill out the Google Form below.</p>
+              </div>
+              <button onClick={handleCloseCsrModal} className="text-muted-foreground hover:text-foreground">✕</button>
+            </div>
+            <div className="mt-4 space-y-4">
+              <a
+                href="https://forms.gle/your-google-form-link"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700"
+              >
+                Fill this form
+              </a>
+              <div className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  id="csrFormFilled"
+                  checked={csrFormChecked}
+                  onChange={e => setCsrFormChecked(e.target.checked)}
+                />
+                <label htmlFor="csrFormFilled" className="text-sm text-foreground">I have filled the form</label>
+              </div>
+              <Button
+                variant="default"
+                className="w-full"
+                disabled={!csrFormChecked}
+                onClick={handleCsrSubmit}
+              >
+                Done
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
