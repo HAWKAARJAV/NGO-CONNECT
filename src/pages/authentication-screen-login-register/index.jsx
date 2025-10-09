@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import LoginForm from './components/LoginForm';
 import RegisterForm from './components/RegisterForm';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaHeart, FaUsers, FaBuilding, FaHandshake, FaGlobe, FaChartLine, FaShieldAlt, FaMobileAlt, FaLinkedin, FaGithub, FaPlay } from 'react-icons/fa';
+import { FaHeart, FaUsers, FaBuilding, FaHandshake, FaGlobe, FaChartLine, FaShieldAlt, FaMobileAlt, FaLinkedin, FaGithub, FaPlay, FaRocket } from 'react-icons/fa';
 import PresentationMode from '../../components/PresentationMode';
 
 const AuthenticationScreen = () => {
@@ -13,13 +13,13 @@ const AuthenticationScreen = () => {
 
   const navigate = useNavigate();
   return (
-    <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+    <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-teal-900">
       {/* Enhanced Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute bg-purple-500 rounded-full -top-40 -right-40 w-80 h-80 mix-blend-multiply filter blur-xl opacity-20 animate-blob"></div>
-        <div className="absolute bg-pink-500 rounded-full -bottom-40 -left-40 w-80 h-80 mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000"></div>
-        <div className="absolute bg-blue-500 rounded-full top-40 left-40 w-80 h-80 mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4000"></div>
-        <div className="absolute bg-green-500 rounded-full top-20 right-20 w-60 h-60 mix-blend-multiply filter blur-xl opacity-15 animate-blob animation-delay-6000"></div>
+        <div className="absolute bg-blue-500 rounded-full -top-40 -right-40 w-80 h-80 mix-blend-multiply filter blur-xl opacity-25 animate-blob"></div>
+        <div className="absolute bg-teal-500 rounded-full -bottom-40 -left-40 w-80 h-80 mix-blend-multiply filter blur-xl opacity-25 animate-blob animation-delay-2000"></div>
+        <div className="absolute bg-cyan-500 rounded-full top-40 left-40 w-80 h-80 mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4000"></div>
+        <div className="absolute bg-emerald-500 rounded-full top-20 right-20 w-60 h-60 mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-6000"></div>
       </div>
 
       {/* Enhanced Floating Particles */}
@@ -53,7 +53,7 @@ const AuthenticationScreen = () => {
           animate={{ opacity: 1, x: 0 }}
           className="flex items-center space-x-2"
         >
-          <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-gradient-to-r from-purple-500 to-pink-500">
+          <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-gradient-to-r from-blue-500 to-teal-500 shadow-lg">
             <FaHandshake className="w-6 h-6 text-white" />
           </div>
           <span className="text-xl font-bold text-white">NGO-CONNECT</span>
@@ -64,7 +64,7 @@ const AuthenticationScreen = () => {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             onClick={() => setShowPresentation(true)}
-            className="flex items-center px-4 py-2 space-x-2 text-white transition-all duration-300 rounded-lg bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
+            className="flex items-center px-4 py-2 space-x-2 text-white transition-all duration-300 rounded-lg bg-gradient-to-r from-blue-500 to-teal-500 hover:from-blue-600 hover:to-teal-600 shadow-lg hover:shadow-xl"
           >
             <FaPlay className="w-4 h-4" />
             <span>Demo</span>
@@ -91,30 +91,31 @@ const AuthenticationScreen = () => {
           >
             <div className="mb-8">
               <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-                className="inline-flex items-center justify-center w-24 h-24 mb-6 rounded-full shadow-2xl bg-gradient-to-r from-purple-500 to-pink-500"
+                initial={{ scale: 0, rotate: -180 }}
+                animate={{ scale: 1, rotate: 0 }}
+                transition={{ duration: 0.8, delay: 0.2, type: "spring", stiffness: 100 }}
+                className="inline-flex items-center justify-center w-28 h-28 mb-8 rounded-full shadow-2xl bg-gradient-to-br from-blue-400 via-teal-500 to-cyan-600 border-2 border-white/20"
               >
-                <FaHandshake className="w-12 h-12 text-white" />
+                <FaHandshake className="w-14 h-14 text-white drop-shadow-lg" />
               </motion.div>
               
               <motion.h1
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.3 }}
-                className="mb-4 text-5xl font-bold text-white lg:text-7xl"
+                initial={{ opacity: 0, y: 30, scale: 0.8 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ duration: 0.9, delay: 0.4, type: "spring", stiffness: 80 }}
+                className="mb-6 text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white via-blue-100 to-teal-200 lg:text-8xl tracking-tight drop-shadow-2xl"
               >
                 NGO-CONNECT
               </motion.h1>
               
               <motion.p
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.4 }}
-                className="mb-8 text-xl leading-relaxed text-gray-300 lg:text-2xl"
+                transition={{ duration: 1, delay: 0.6 }}
+                className="mb-10 text-xl leading-relaxed text-blue-50/90 lg:text-2xl max-w-2xl mx-auto lg:mx-0 backdrop-blur-sm bg-white/5 p-4 rounded-lg border border-white/10"
               >
-                Revolutionizing philanthropy through technology. 
+                🌟 Revolutionizing philanthropy through technology. 
+                <br className="hidden lg:block" />
                 Connecting generous donors with impactful NGOs nationwide.
               </motion.p>
 
@@ -126,9 +127,13 @@ const AuthenticationScreen = () => {
               >
                 <button 
                   onClick={() => navigate('/learn-more')}
-                  className="px-8 py-4 text-lg font-semibold text-white transition-all duration-300 transform shadow-lg bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl hover:from-purple-600 hover:to-pink-600 hover:shadow-xl hover:scale-105"
+                  className="group relative px-10 py-5 text-lg font-bold text-white transition-all duration-500 transform shadow-2xl bg-gradient-to-r from-blue-500 via-teal-500 to-cyan-500 rounded-2xl hover:from-blue-600 hover:via-teal-600 hover:to-cyan-600 hover:shadow-3xl hover:scale-110 border-2 border-white/20 overflow-hidden"
                 >
-                  Learn More
+                  <span className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent transform -skew-x-12 translate-x-full group-hover:translate-x-0 transition-transform duration-700"></span>
+                  <span className="relative z-10 flex items-center justify-center gap-2">
+                    <FaRocket className="w-5 h-5" />
+                    Explore Platform
+                  </span>
                 </button>
                 
               </motion.div>
@@ -137,23 +142,23 @@ const AuthenticationScreen = () => {
             {/* Enhanced Feature Cards */}
             <div className="grid grid-cols-1 gap-4 mb-8 sm:grid-cols-2 lg:grid-cols-4">
               {[
-                { icon: FaHeart, title: 'Smart Donations', desc: 'AI-powered matching', color: 'from-red-500 to-pink-500' },
-                { icon: FaUsers, title: 'NGO Network', desc: '500+ verified NGOs', color: 'from-blue-500 to-cyan-500' },
-                { icon: FaChartLine, title: 'Impact Tracking', desc: 'Real-time analytics', color: 'from-green-500 to-emerald-500' },
-                { icon: FaShieldAlt, title: 'Secure Platform', desc: 'Bank-grade security', color: 'from-purple-500 to-indigo-500' }
+                { icon: FaHeart, title: 'Smart Donations', desc: 'AI-powered matching', color: 'from-blue-400 to-cyan-500' },
+                { icon: FaUsers, title: 'NGO Network', desc: '500+ verified NGOs', color: 'from-teal-400 to-blue-500' },
+                { icon: FaChartLine, title: 'Impact Tracking', desc: 'Real-time analytics', color: 'from-cyan-400 to-teal-500' },
+                { icon: FaShieldAlt, title: 'Secure Platform', desc: 'Bank-grade security', color: 'from-blue-500 to-indigo-500' }
               ].map((feature, index) => (
                 <motion.div
                   key={feature.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.6 + index * 0.1 }}
-                  className="p-4 transition-all duration-300 border rounded-xl bg-white/10 backdrop-blur-sm border-white/20 hover:bg-white/20 hover:scale-105 hover:shadow-lg"
+                  initial={{ opacity: 0, y: 30, scale: 0.8 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{ duration: 0.6, delay: 0.7 + index * 0.15, type: "spring", stiffness: 100 }}
+                  className="group p-6 transition-all duration-500 border rounded-2xl bg-white/10 backdrop-blur-md border-white/30 hover:bg-white/20 hover:scale-110 hover:shadow-2xl hover:border-white/50 cursor-pointer"
                 >
-                  <div className={`w-12 h-12 bg-gradient-to-r ${feature.color} rounded-lg flex items-center justify-center mx-auto mb-3`}>
-                    <feature.icon className="w-6 h-6 text-white" />
+                  <div className={`w-16 h-16 bg-gradient-to-br ${feature.color} rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:shadow-xl transition-all duration-500 group-hover:scale-110 border-2 border-white/20`}>
+                    <feature.icon className="w-8 h-8 text-white drop-shadow-lg" />
                   </div>
-                  <h3 className="mb-1 font-semibold text-white">{feature.title}</h3>
-                  <p className="text-sm text-gray-300">{feature.desc}</p>
+                  <h3 className="mb-2 text-lg font-bold text-white group-hover:text-blue-100 transition-colors duration-300">{feature.title}</h3>
+                  <p className="text-sm text-blue-100/80 group-hover:text-blue-50 transition-colors duration-300">{feature.desc}</p>
                 </motion.div>
               ))}
             </div>
@@ -170,11 +175,17 @@ const AuthenticationScreen = () => {
                 { number: '750+', label: 'Verified NGOs', icon: FaBuilding },
                 { number: '₹75M+', label: 'Total Raised', icon: FaChartLine }
               ].map((stat, index) => (
-                <div key={stat.label} className="p-4 transition-all duration-300 border rounded-xl bg-white/10 backdrop-blur-sm border-white/20 hover:bg-white/20">
-                  <stat.icon className="w-6 h-6 mx-auto mb-2 text-purple-400" />
-                  <div className="text-2xl font-bold text-white">{stat.number}</div>
-                  <div className="text-sm text-gray-300">{stat.label}</div>
-                </div>
+                <motion.div 
+                  key={stat.label}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5, delay: 0.9 + index * 0.1 }}
+                  className="group p-6 transition-all duration-500 border rounded-2xl bg-white/10 backdrop-blur-md border-white/30 hover:bg-white/20 hover:scale-105 hover:shadow-xl cursor-pointer"
+                >
+                  <stat.icon className="w-8 h-8 mx-auto mb-3 text-blue-400 group-hover:text-teal-300 transition-colors duration-300 drop-shadow-lg" />
+                  <div className="text-3xl font-bold text-white group-hover:text-blue-100 transition-colors duration-300">{stat.number}</div>
+                  <div className="text-sm text-blue-100/80 group-hover:text-blue-50 transition-colors duration-300">{stat.label}</div>
+                </motion.div>
               ))}
             </motion.div>
           </motion.div>
