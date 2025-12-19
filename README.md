@@ -10,7 +10,8 @@
 <br>
 
 <div align="center">
-  <h3>🏆 Winner of National Level Hackathon</h3>
+  <h3>🥈 2nd Place - Innovation Mela at NSUT by Ciena Pvt Limited</h3>
+  <h4>🚀 Currently in Prototype Stage - Top 52 Teams Across Region and Various Universities</h4>
   <p><strong>Connecting Generous Donors with Impactful NGOs Nationwide</strong></p>
 </div>
 
@@ -19,6 +20,9 @@
 ## 🚀 Project Overview
 
 **NGO-CONNECT** is a revolutionary platform that bridges the gap between generous donors and impactful NGOs through cutting-edge technology. Our mission is to make philanthropy more accessible, transparent, and effective by leveraging AI-powered matching, real-time impact tracking, and secure payment processing.
+
+### 🌐 Live Demo
+**The application is deployed and working at:** [https://we-connect-ngo.netlify.app/](https://we-connect-ngo.netlify.app/)
 
 ### 🎯 Key Features
 
@@ -205,10 +209,10 @@ donateconnect/
 
 ## 🏆 Hackathon Achievements
 
-- **🥇 1st Place** - National Level Hackathon 2024
-- **🏆 Best Innovation Award** - Technology for Social Good
-- **🌟 Most Impactful Solution** - Philanthropy Category
-- **💡 Best UI/UX Design** - User Experience Award
+- **� 2nd Place** - Innovation Mela at NSUT by Ciena Pvt Limited
+- **🚀 Prototype Stage** - Selected in Top 52 Teams across region and various universities
+- **🏆 Innovation Recognition** - Technology for Social Good
+- **🌟 Impactful Solution** - Philanthropy Category
 
 ---
 
