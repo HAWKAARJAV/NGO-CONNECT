@@ -1,3 +1,137 @@
+**NGO-CONNECT**
+
+**Project Overview**:
+- **Description**: NGO-CONNECT is a web application that helps donors, funding organizations, and NGOs discover, verify, and support causes. It provides donor dashboards, NGO discovery and matching, impact tracking, item donation listings, direct donations, and tools for organizations to manage verification and CSR reporting.
+
+**Key Features**:
+- **Authentication & Roles**: Role-based login/register flows for donors, NGOs, and funding organizations.
+- **Donor Dashboard**: Personalized donor home with impact stats, donation history, and nearby NGO discovery.
+- **NGO Discovery & Matching**: Search and match NGOs with needs and cause-specific filters.
+- **Impact Tracking & Verification**: Track proofs of impact and compliance with verification timelines.
+- **Item Donation Listings**: Create and browse item donation listings with modals and management UI.
+- **Direct Donations & CSR**: Support one-off and recurring donations and CSR reporting for funders.
+
+**Tech Stack**:
+- **Frontend**: React (JSX), Vite, Tailwind CSS
+- **Auth & DB**: Supabase integration via `src/lib/supabase.js`
+- **Utilities**: Custom contexts for auth and data sync, service modules in `src/services`
+
+**Quick Start**:
+- Install:
+
+```bash
+npm install
+```
+- Run (dev):
+
+```bash
+npm run dev
+```
+
+**Repository Structure (high level)**:
+- **public/**: Static files and assets.
+- **src/**: Main application source.
+  - **App.jsx, index.jsx, Routes.jsx**: App entry and routing.
+  - **components/**: Reusable UI components and guards.
+  - **contexts/**: `AuthContext.jsx`, `DataSyncContext.jsx` for global state.
+  - **lib/**: `supabase.js` for Supabase client and helpers.
+  - **pages/**: All page views and nested page folders (detailed below).
+  - **services/**: Backend interaction modules (`donationService.js`, `impactService.js`, `ngoService.js`, `notificationService.js`).
+
+**Pages & What They Contain**
+Below are the main pages (files and folders) and a concise explanation of what each page does and the important components inside them. Click the links to open files.
+
+- **Home & General**
+  - [index.html](index.html): App host file for Vite.
+  - [src/pages/GetStarted.jsx](src/pages/GetStarted.jsx): Onboarding entry page that guides new users through account creation or exploration.
+  - [src/pages/LearnMore.jsx](src/pages/LearnMore.jsx): Informational content about platform goals, impact approach, and transparency.
+  - [src/pages/NotFound.jsx](src/pages/NotFound.jsx): 404 page shown for unknown routes.
+
+- **Authentication**
+  - [src/pages/authentication-screen-login-register/index.jsx](src/pages/authentication-screen-login-register/index.jsx): Authentication route wrapper handling login, register, and OTP flows.
+    - [src/pages/authentication-screen-login-register/components/LoginForm.jsx](src/pages/authentication-screen-login-register/components/LoginForm.jsx): Email/password login UI and submission.
+    - [src/pages/authentication-screen-login-register/components/RegisterForm.jsx](src/pages/authentication-screen-login-register/components/RegisterForm.jsx): Registration form with role selection.
+    - [src/pages/authentication-screen-login-register/components/OTPVerificationModal.jsx](src/pages/authentication-screen-login-register/components/OTPVerificationModal.jsx): OTP submission UI for verification.
+    - [src/pages/authentication-screen-login-register/components/ForgotPasswordModal.jsx](src/pages/authentication-screen-login-register/components/ForgotPasswordModal.jsx): Password recovery flow.
+    - [src/pages/authentication-screen-login-register/components/RoleSelectionCard.jsx](src/pages/authentication-screen-login-register/components/RoleSelectionCard.jsx): Select donor / NGO / funding organization during signup.
+    - [src/pages/authentication-screen-login-register/components/TrustSignals.jsx](src/pages/authentication-screen-login-register/components/TrustSignals.jsx): Trust badges / verification signals shown on auth pages.
+
+- **Public Pages & Outreach**
+  - [src/pages/NGONeeds.jsx](src/pages/NGONeeds.jsx): Browse or search NGO needs (items, funds, volunteers) with filters and quick actions.
+  - [src/pages/DirectDonation.jsx](src/pages/DirectDonation.jsx): One-off donation flow with payment selection and success handling.
+  - [src/pages/BadgesAndAchievements.jsx](src/pages/BadgesAndAchievements.jsx): Public-facing gamification and achievement listings for donors and NGOs.
+
+- **Donor Dashboard**
+  - [src/pages/donor-dashboard/index.jsx](src/pages/donor-dashboard/index.jsx): Donor home/dashboard orchestration and layout.
+    - [src/pages/donor-dashboard/components/ActivityFeed.jsx](src/pages/donor-dashboard/components/ActivityFeed.jsx): Timeline of donor actions and NGO updates.
+    - [src/pages/donor-dashboard/components/DonationCard.jsx](src/pages/donor-dashboard/components/DonationCard.jsx): Individual donation summary and receipts.
+    - [src/pages/donor-dashboard/components/GamificationPanel.jsx](src/pages/donor-dashboard/components/GamificationPanel.jsx): Points, badges and progress for donor engagement.
+    - [src/pages/donor-dashboard/components/ImpactChart.jsx](src/pages/donor-dashboard/components/ImpactChart.jsx): Visualizations summarizing donor impact.
+    - [src/pages/donor-dashboard/components/MapWidget.jsx](src/pages/donor-dashboard/components/MapWidget.jsx): Nearby NGOs and donation locations.
+    - [src/pages/donor-dashboard/components/NearbyNGOs.jsx](src/pages/donor-dashboard/components/NearbyNGOs.jsx): Discovery widget for nearby NGOs.
+    - [src/pages/donor-dashboard/components/QuickActions.jsx](src/pages/donor-dashboard/components/QuickActions.jsx): Fast links for donations, sharing, or volunteering.
+
+- **Funding Organization Dashboard**
+  - [src/pages/funding-organization-dashboard/index.jsx](src/pages/funding-organization-dashboard/index.jsx): Dashboard for funders to manage contests, CSR reports, and NGO browsing.
+    - [src/pages/funding-organization-dashboard/components/ContestSection.jsx](src/pages/funding-organization-dashboard/components/ContestSection.jsx): Manage and review funding contests.
+    - [src/pages/funding-organization-dashboard/components/CSRReportsSection.jsx](src/pages/funding-organization-dashboard/components/CSRReportsSection.jsx): CSR reporting and exportable summaries.
+    - [src/pages/funding-organization-dashboard/components/NGOBrowseSection.jsx](src/pages/funding-organization-dashboard/components/NGOBrowseSection.jsx): Discovery UX for selecting NGO partners.
+    - [src/pages/funding-organization-dashboard/components/ProblemsSection.jsx](src/pages/funding-organization-dashboard/components/ProblemsSection.jsx): Track issues and project problems.
+
+- **NGO Post-Verification Dashboard**
+  - [src/pages/ngo-dashboard-post-verification/index.jsx](src/pages/ngo-dashboard-post-verification/index.jsx): Dashboard for NGOs after verification to manage needs, proofs, and donor communications.
+
+- **Impact Tracking & Proof Verification**
+  - [src/pages/impact-tracking-and-proof-verification/index.jsx](src/pages/impact-tracking-and-proof-verification/index.jsx): Main page for tracking program impact and verification progress.
+    - [src/pages/impact-tracking-and-proof-verification/components/ComplianceTracker.jsx](src/pages/impact-tracking-and-proof-verification/components/ComplianceTracker.jsx): Shows verification milestones and deadlines.
+    - [src/pages/impact-tracking-and-proof-verification/components/DonationTimeline.jsx](src/pages/impact-tracking-and-proof-verification/components/DonationTimeline.jsx): Timeline of donations matched to proofs.
+
+- **Item Donation Listings**
+  - [src/pages/item-donation-listing/index.jsx](src/pages/item-donation-listing/index.jsx): Listing index for item donations with search and categories.
+  - [src/pages/item-donation-listing/ListedItems.jsx](src/pages/item-donation-listing/ListedItems.jsx): Grid/list view of items available for donation or needed by NGOs.
+  - [src/pages/item-donation-listing/ListedItemsModal.jsx](src/pages/item-donation-listing/ListedItemsModal.jsx): Modal to view and claim an item donation.
+
+- **NGO Discovery & Matching**
+  - [src/pages/ngo-discovery-and-matching/index.jsx](src/pages/ngo-discovery-and-matching/index.jsx): Advanced discovery UI with matching algorithm results, filters, and NGO profiles.
+
+**Shared UI & Helpers**
+- `src/components/ui/` contains atomic UI elements used across pages (Button, Checkbox, Header, Input, Select, StatusIndicator, Breadcrumb).
+- Guards and wrappers: `src/components/AuthGuard.jsx`, `RoleBasedRoute.jsx`, `NavigationGuard.jsx`, `PresentationMode.jsx`, and `ErrorBoundary.jsx` ensure routing safety and UX polish.
+
+**Contexts & State**
+- `src/contexts/AuthContext.jsx`: Authentication, role data, and session state.
+- `src/contexts/DataSyncContext.jsx`: Background sync indicators and offline/online handling.
+
+**Services & API integrations**
+- `src/services/donationService.js`: Donation-related API calls and helpers.
+- `src/services/impactService.js`: Impact and proof submission APIs.
+- `src/services/ngoService.js`: NGO profiles, needs, and matching endpoints.
+- `src/services/notificationService.js`: In-app notification helpers.
+
+**Supabase & Migrations**
+- `src/lib/supabase.js`: Supabase client initialization used across services and contexts.
+- `supabase/migrations/20250108181106_donateconnect_schema.sql`: Database schema migration showing tables and constraints used by the project.
+
+**Styling**
+- Tailwind configuration: `tailwind.config.js` and `src/styles/tailwind.css`.
+- Base styles: `src/styles/index.css` and `src/index.css`.
+
+**Development Notes & Next Steps**
+- Environment: provide Supabase keys in `.env` following README examples (not checked into repo).
+- Run the dev server: `npm run dev` and open the Vite URL.
+- Tests: Add unit/integration tests for services and key pages as next improvement.
+
+**Contributing**
+- Fork, open a branch, and submit PRs with clear change descriptions. Use linting and formatters consistent with the codebase.
+
+**License**
+- Add a license file or statement here if the project will be open sourced.
+
+---
+
+If you'd like, I can:
+- run the dev server locally and confirm the app boots, or
+- further expand the page descriptions with component-level details and props.
 # 🌟 NGO-CONNECT - Revolutionizing Philanthropy Through Technology
 
 <div align="center">
